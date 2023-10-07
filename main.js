@@ -2,13 +2,31 @@ let x = 30;
 let y = 30;
 let targetX = 30;
 let targetY = 30;
-let speed = 1;
+let speed = 5;
 let lastTick = Date.now();
 let szin = "red";
 let kulsoSzin = "white";
 let directionX = 0;
 let directionY = 0;
 let isMouse = false;
+let material = new p2.Material();
+let playerMaterial = new p2.Material();
+let falMaterial = new p2.Material();
+let world = new p2.World({gravity: [0, 0]});
+world.addContactMaterial(new p2.ContactMaterial(playerMaterial, material, {friction: 500, restitution: 0}));
+world.addContactMaterial(new p2.ContactMaterial(playerMaterial, falMaterial, {friction: 0, stiffness: Number.POSITIVE_INFINITY}))
+let body = new p2.Body({mass: 4, damping: 0.6, angularDamping: 0.4});
+let shape = new p2.Circle({radius: 8, material: material});
+let playerBody = new p2.Body({mass: 1, damping: 0, angularDamping: 0, fixedRotation: true});
+let playerShape = new p2.Circle({radius: 22, material: playerMaterial});
+let fal1 = new p2.Body();
+let fal1Shape = new p2.Plane({material: falMaterial});
+let fal2 = new p2.Body();
+let fal2Shape = new p2.Plane({material: falMaterial});
+let fal3 = new p2.Body();
+let fal3Shape = new p2.Plane({material: falMaterial});
+let fal4 = new p2.Body();
+let fal4Shape = new p2.Plane({material: falMaterial});
 
 function settingsPage() {
     if(menu.style.display = "block") {
@@ -40,6 +58,15 @@ function startGame() {
     hatterLogo.style.display = "none";
     footerJs.style.display = "none";
     footerJsVer.style.display = "none";
+
+    body.addShape(shape);
+    fal1.addShape(fal1Shape, [0, 0], 0);
+    world.addBody(body);
+    body.position = [200, 200];
+    playerBody.addShape(playerShape);
+    world.addBody(playerBody);
+    world.addBody(fal1)
+    playerBody.position = [100, 100];
 
     
 
@@ -106,6 +133,8 @@ function startGame() {
             // le kell nulláznunk az irányokat, mert h nem, megy tovább a kör a target irányba ész nélkül
             directionX = 0;
             directionY = 0;
+            playerBody.velocity[0] = 0;
+            playerBody.velocity[1] = 0;
         }
 
         // ha mouse irányítás van, return -> nincs több tennivaló
@@ -146,15 +175,19 @@ function startGame() {
 
         if (e.key == "ArrowRight") {
             directionX = 0;
+            playerBody.velocity[0] = 0;
         }
         if (e.key == "ArrowLeft") {
             directionX = 0;
+            playerBody.velocity[0] = 0;
         }
         if (e.key == "ArrowUp") {
             directionY = 0;
+            playerBody.velocity[1] = 0;
         }
         if (e.key == "ArrowDown") {
             directionY = 0;
+            playerBody.velocity[1] = 0;
         }
     });
 
@@ -166,13 +199,13 @@ function calculateDirectionFromMouse() {
     // merre is kéne a körnek mennie?
     // a dir az az vektor, ami összeköti a célpontot és a kör aktuális pozícióját
     // ezen a vektoron kellene a körnek haladnia
-    const dirX = (targetX - x); // EZ NEM EGYSÉGVEKTOR MÉG!
-    const dirY = (targetY - y); // EZ NEM EGYSÉGKEVTOR MÉG!
+    const dirX = (targetX - playerBody.position[0]); // EZ NEM EGYSÉGVEKTOR MÉG!
+    const dirY = (targetY - playerBody.position[1]); // EZ NEM EGYSÉGKEVTOR MÉG!
     
     // milyen messze vagyunk ?
     const length = Math.sqrt(dirX * dirX + dirY * dirY);
 
-    if (length > 10) {
+    if (length > 5) {
         // menni kell valamilyen irányba ->
         // legyen a directionX a dirX, de egységvektor kell -> le kell osztani a dir  egységvektor
         directionX = dirX;
@@ -182,6 +215,7 @@ function calculateDirectionFromMouse() {
         // ezek után a fizika majd pakolgatja a jó irányba a kört!
         
     } else {
+        playerBody.velocity = [0, 0];
         // nem kell menni -> legyen az irány 0,0 azaz semerre se mutasson az irányvektor
         // a fizika nem fogja sehova se továbbpakolni a kört így szerencsére :)
         directionX = 0;
@@ -254,6 +288,7 @@ function updateBallPhysics() {
 
 function calculatePhysics() {
     const deltaTime = Date.now() - lastTick;
+    world.step(deltaTime / 1000)
 
     // Ellenőrizzük, hogy a labda ne menjen ki a képernyőről
     if (labda.x - labda.radius < 0 || labda.x + labda.radius > gameCanvas.width) {
@@ -271,8 +306,9 @@ function calculatePhysics() {
         const normX = directionX / length;
         const normY = directionY / length;
 
-        x += normX * speed * deltaTime / 100;
-        y += normY * speed * deltaTime / 100;
+        // x += normX * speed * deltaTime / 100;
+        // y += normY * speed * deltaTime / 100;
+        playerBody.velocity = [normX * speed * 50, normY * speed * 50];
 
         // Ellenőrizzük az ütközést a kék labdával
         const distanceX = labda.x - x;
@@ -374,9 +410,9 @@ function redraw(canvas) {
     ctx.fill();
 
     // rajzoljuk ki a kört a canvasra, adott color-al, adott x és y pozícióra
-    drawCircle(canvas, 30, szin, x, y);
+    drawCircle(canvas, 22, szin, playerBody.position[0], playerBody.position[1]);
     // Rajzoljuk ki a labdát
-    drawCircle(canvas, labda.radius, labda.szin, labda.x, labda.y);
+    drawCircle(canvas, labda.radius, labda.szin, body.position[0], body.position[1]);
 
     // ha van irányunk, nem nulla hosszú, rajzoljuk ki
     const length = Math.sqrt(directionX * directionX + directionY * directionY);
@@ -393,7 +429,7 @@ function redraw(canvas) {
 const labda = {
     x: 100,  // A labda kezdőpozíciója x tengelyen
     y: 100,  // A labda kezdőpozíciója y tengelyen
-    radius: 10,  // A labda sugara
+    radius: 8,  // A labda sugara
     szin: "blue",  // A labda színe
     velocityX: 0,  // A labda sebessége x tengelyen
     velocityY: 0  // A labda sebessége y tengelyen
@@ -414,7 +450,7 @@ function drawDirection(canvas, normX, normY) {
     const ctx = canvas.getContext("2d");
     ctx.strokeStyle = "black";
     ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + normX * 30, y + normY * 30);
+    ctx.moveTo(playerBody.position[0], playerBody.position[1]);
+    ctx.lineTo(playerBody.position[0] + normX * 22, playerBody.position[1] + normY * 22);
     ctx.stroke();
 }
