@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<link rel="stylesheet" href="styles.css">
+<script src="main.js"></script>
+
+</head>
+
+<body oncontextmenu="return false">
+  <canvas id="gameCanvas"></canvas>
+
+  <div id="footerJsVer">
+    <img class="footerCssVer" src="footerVertical.png">
+  </div>
+
+  <div id="footerJs">
+    <img class="footerCss" src="footer.png">
+  </div>
+
+  <div id="hatterLogo">
+    <img class="hatterLogo" src="logo.png">
+  </div>
+
+  <div id="hatterJs">
+    <img class="hatter" id="change1" src="hatter1.png">
+  </div>
+
+  <div id="hatterJs1" hidden>
+    <img class="hatter1" id="change2" src="hatter.png">
+  </div>
+
+  <div id="menu">
+    <button class="button" onclick="startGame()">Start Game!</button>
+    <button class="button" onclick="settingsPageSoon()">Coming soon!</button>
+    <button class="button" onclick="self.close()">Close Game!</button>
+  </div>
+
+  <div id="beallitasok" hidden>
+    <!-- TO DO: -->
+    <button class="button" >Coming Soon!</button>
+    <button class="button" id="mouseValtas" onclick="mouseActivated()">Mouse</button>
+    <button class="button" id="keyboardValtas" onclick="keyboardActivated()">Keyboard</button>
+  </div>
+
+
+
+
+
+  <div id="back" hidden>
+    <button class="button" onclick="backPage()">Back</button>
+  </div>
+
+</body>
+</html>
+
