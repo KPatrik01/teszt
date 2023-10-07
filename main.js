@@ -1,5 +1,3 @@
-let x = 30;
-let y = 30;
 let targetX = 30;
 let targetY = 30;
 let speed = 5;
@@ -9,6 +7,7 @@ let kulsoSzin = "white";
 let directionX = 0;
 let directionY = 0;
 let isMouse = false;
+let loves = false;
 let material = new p2.Material();
 let playerMaterial = new p2.Material();
 let falMaterial = new p2.Material();
@@ -61,11 +60,17 @@ function startGame() {
 
     body.addShape(shape);
     fal1.addShape(fal1Shape, [0, 0], 0);
+    fal2.addShape(fal2Shape, [0, 0], -Math.PI/2);
+    fal3.addShape(fal3Shape, [1000, 0], Math.PI/2);
+    fal4.addShape(fal4Shape, [1000, 800], Math.PI);
     world.addBody(body);
     body.position = [200, 200];
     playerBody.addShape(playerShape);
     world.addBody(playerBody);
-    world.addBody(fal1)
+    world.addBody(fal1);
+    world.addBody(fal2);
+    world.addBody(fal3);
+    world.addBody(fal4);
     playerBody.position = [100, 100];
 
     
@@ -100,6 +105,7 @@ function startGame() {
             speed = 8;
         } else {
             if (e.button == 2) {
+                loves = true;
                 szin = "green";
                 kulsoSzin = "red"
             }
@@ -115,6 +121,7 @@ function startGame() {
             speed = 5;
         } else {
             if (e.button == 2) {
+                loves = false;
                 szin = "red";
                 kulsoSzin = "white";
             }
@@ -223,85 +230,12 @@ function calculateDirectionFromMouse() {
     }
 }
 
-function handleBallCollision() {
-    const distanceX = labda.x - x;
-    const distanceY = labda.y - y;
-    const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-  
-    if (distance < labda.radius + 30) {
-        // Ütközés történt, kezeljük az ütközést
-
-        // Számítsuk ki az ütközés irányát (normált)
-        const normalX = distanceX / distance;
-        const normalY = distanceY / distance;
-
-        // Számítsuk ki a sebességvektor és a normálisvektor skaláris szorzatát
-        const dotProduct = labda.velocityX * normalX + labda.velocityY * normalY;
-
-        // Számítsuk ki az új sebességvektort, amely a normálisvektorral való tükrözés eredménye
-        const reflectedVelocityX = labda.velocityX - 0.1 * dotProduct * normalX;
-        const reflectedVelocityY = labda.velocityY - 0.1 * dotProduct * normalY;
-
-        // Állítsuk be az új sebességvektort a labdának, és adjunk hozzá egy kis sebességet az ütközés miatt
-        labda.velocityX = reflectedVelocityX + normalX * 3;
-        labda.velocityY = reflectedVelocityY + normalY * 3;
-    }
-}
-
-  
-  // A labda folyamatos mozgása
-  function updateBallPhysics() {
-    // Ha nincs ütközés, akkor a labda tovább csúszik az aktuális sebességével
-    labda.x += labda.velocityX;
-    labda.y += labda.velocityY;
-  
-    // Lassítsuk le a labdát folyamatosan
-    labda.velocityX *= 0.999;
-    labda.velocityY *= 0.999;
-  }
-
-function checkCollision() {
-    const distanceX = labda.x - x;
-    const distanceY = labda.y - y;
-    const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-
-    if (distance < labda.radius + 30) {
-        // Ütközés történt, kezeljük az ütközést
-        handleCollision(distanceX, distanceY, distance);
-    }
-}
-// ...
-
-
-// A labda folyamatos mozgása
-function updateBallPhysics() {
-    // Ha nincs ütközés, akkor a labda tovább csúszik az aktuális sebességével
-    labda.x += labda.velocityX;
-    labda.y += labda.velocityY;
-  
-    // Lassítsuk le a labdát folyamatosan
-    labda.velocityX *= 0.98;
-    labda.velocityY *= 0.98;
-  }
-
-
-
 function calculatePhysics() {
     const deltaTime = Date.now() - lastTick;
     world.step(deltaTime / 1000)
 
-    // Ellenőrizzük, hogy a labda ne menjen ki a képernyőről
-    if (labda.x - labda.radius < 0 || labda.x + labda.radius > gameCanvas.width) {
-        // A labda a vízszintes szélénél van, megfordítjuk a sebességét
-        labda.velocityX *= -1; // Az irány inverzére vált
-    }
-    
-    if (labda.y - labda.radius < 0 || labda.y + labda.radius > gameCanvas.height) {
-        // A labda a függőleges szélénél van, megfordítjuk a sebességét
-        labda.velocityY *= -1; // Az irány inverzére vált
-    }
-
     const length = Math.sqrt(directionX * directionX + directionY * directionY);
+    playerBody.velocity = [0, 0];
     if (length > 0) {
         const normX = directionX / length;
         const normY = directionY / length;
@@ -310,95 +244,22 @@ function calculatePhysics() {
         // y += normY * speed * deltaTime / 100;
         playerBody.velocity = [normX * speed * 50, normY * speed * 50];
 
-        // Ellenőrizzük az ütközést a kék labdával
-        const distanceX = labda.x - x;
-        const distanceY = labda.y - y;
-        const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-
-        // Ellenőrizzük, hogy a távolság a két középpont között kisebb vagy egyenlő-e a piros kör sugarával
-        if (distance < labda.radius + 30) {
-            // Ütközés történt, kezeljük az ütközést
-            handleCollision(distanceX, distanceY, distance);
-        }
-
-        // Korlátozzuk a labda sebességét egy maximum értékre
-        const maxVelocity = 5;
-        if (Math.abs(labda.velocityX) > maxVelocity) {
-            labda.velocityX = Math.sign(labda.velocityX) * maxVelocity;
-        }
-        if (Math.abs(labda.velocityY) > maxVelocity) {
-            labda.velocityY = Math.sign(labda.velocityY) * maxVelocity;
-        }
     }
 
-    // Ütközéskezelés a kék labda és a piros kör között
-    handleBallCollision();
-    updateBallPhysics();
+    let tortentLoves = loves && world.overlapKeeper.bodiesAreOverlapping(playerBody, body);
+    if (tortentLoves) {
 
-    // Lassítsuk le a labdát minden frissítésnél
-    labda.velocityX *= 0.95; // Pl. 5%-kal lassuljon le
-    labda.velocityY *= 0.95; // Pl. 5%-kal lassuljon le
+        let lovesX = body.position[0] - playerBody.position[0];
+        let lovesY = body.position[1] - playerBody.position[1];
+        let normalizaltLoves = p2.vec2.create();
+        p2.vec2.normalize(normalizaltLoves, [lovesX, lovesY])
 
-    // Frissítjük a labda pozícióját a sebesség alapján
-    labda.x += labda.velocityX * deltaTime / 10;
-    labda.y += labda.velocityY * deltaTime / 10;
+        body.velocity[0] = normalizaltLoves[0] * 1000;
+        body.velocity[1] = normalizaltLoves[1] * 1000;
 
+    }
     lastTick = Date.now();
-
-    // Ha a labda már majdnem megállt, állítsuk le teljesen
-    if (Math.abs(labda.velocityX) < 0.1 && Math.abs(labda.velocityY) < 0.1) {
-        labda.velocityX = 0;
-        labda.velocityY = 0;
-    }
 }
-
-// Ütközésdetektálás
-function checkCollision() {
-    const distanceX = labda.x - x;
-    const distanceY = labda.y - y;
-    const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-
-    if (distance < labda.radius + 30) {
-        // Ütközés történt, kezeljük az ütközést
-        handleCollision(distanceX, distanceY, distance);
-    }
-}
-
-function handleCollision(distanceX, distanceY, distance) {
-    const intersectionX = x + (distanceX / distance) * (labda.radius + 30);
-    const intersectionY = y + (distanceY / distance) * (labda.radius + 30);
-
-    // Labda és ütközési pont közötti vektor
-    const collisionVectorX = intersectionX - labda.x;
-    const collisionVectorY = intersectionY - labda.y;
-
-    // Számítsuk ki a normált, amely a kör középpontjától az ütközési ponthoz mutat
-    const normalX = collisionVectorX / distance;
-    const normalY = collisionVectorY / distance;
-
-    // Számítsuk ki a sebességvektor és a normálisvektor skaláris szorzatát
-    const dotProduct = labda.velocityX * normalX + labda.velocityY * normalY;
-
-    // Számítsuk ki az új sebességvektort, amely a normálisvektorral való tükrözés eredménye
-    const reflectedVelocityX = labda.velocityX - 2 * dotProduct * normalX;
-    const reflectedVelocityY = labda.velocityY - 2 * dotProduct * normalY;
-
-    // Állítsuk be az új sebességvektort a labdának, és adjunk hozzá egy kis sebességet az ütközés miatt
-    labda.velocityX = reflectedVelocityX + normalX * 3 * 2; // Kétszeres sebesség hozzáadása
-    labda.velocityY = reflectedVelocityY + normalY * 3 * 2; // Kétszeres sebesség hozzáadása
-
-    // A labda pozíciójának módosítása, hogy ne maradjon a körön belül
-    const moveX = intersectionX - x;
-    const moveY = intersectionY - y;
-    const moveLength = Math.sqrt(moveX * moveX + moveY * moveY);
-    const moveAmount = (labda.radius + 30 - distance) / moveLength;
-
-    labda.x += moveX * moveAmount;
-    labda.y += moveY * moveAmount;
-}
-
-
-
 
 function redraw(canvas) {
     const ctx = canvas.getContext("2d");
@@ -427,12 +288,8 @@ function redraw(canvas) {
 }
 //Labda
 const labda = {
-    x: 100,  // A labda kezdőpozíciója x tengelyen
-    y: 100,  // A labda kezdőpozíciója y tengelyen
     radius: 8,  // A labda sugara
     szin: "blue",  // A labda színe
-    velocityX: 0,  // A labda sebessége x tengelyen
-    velocityY: 0  // A labda sebessége y tengelyen
   };
 
 // rajzoljunk egy kört
