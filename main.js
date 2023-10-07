@@ -266,9 +266,14 @@ function redraw(canvas) {
 
     // tisztítsuk le a canvast minden rajzolás előtt!
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.rect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "gray";
-    ctx.fill();
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "green";
+    ctx.fillRect(0, 0, 1000, 800);
+
+
+    drawWalls(canvas);
 
     // rajzoljuk ki a kört a canvasra, adott color-al, adott x és y pozícióra
     drawCircle(canvas, 22, szin, playerBody.position[0], playerBody.position[1]);
@@ -286,6 +291,33 @@ function redraw(canvas) {
     // újra és újra rajzolunk amikor lehet...
     window.requestAnimationFrame(() => redraw(canvas));
 }
+
+function drawWalls(canvas) {
+
+    const ctx = canvas.getContext("2d");
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 10;
+    ctx.lineCap = "round";
+    drawWall(canvas, [0, 0], [1000, 0]);
+    drawWall(canvas, [1000, 0], [1000, 800]);
+    drawWall(canvas, [1000, 800], [0, 800]);
+    drawWall(canvas, [0, 800], [0, 0]);
+    ctx.lineWidth = 1;
+
+}
+
+function drawWall(canvas, start, end) {
+
+    const ctx = canvas.getContext("2d");
+    ctx.beginPath();
+    ctx.moveTo(start[0], start[1]);
+    ctx.lineTo(end[0], end[1]);
+    ctx.stroke();
+    ctx.closePath();
+
+}
+
+
 //Labda
 const labda = {
     radius: 8,  // A labda sugara
@@ -301,6 +333,7 @@ function drawCircle(canvas, radius, szin, x, y) {
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
+    ctx.closePath();
 }
 
 function drawDirection(canvas, normX, normY) {
@@ -310,4 +343,5 @@ function drawDirection(canvas, normX, normY) {
     ctx.moveTo(playerBody.position[0], playerBody.position[1]);
     ctx.lineTo(playerBody.position[0] + normX * 22, playerBody.position[1] + normY * 22);
     ctx.stroke();
+    ctx.closePath();
 }
