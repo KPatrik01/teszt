@@ -82,7 +82,7 @@ function startGame() {
         } else {
             if (e.button == 2) {
                 loves = true;
-                szin = "green";
+                gameWorld.player.kick = true;
                 kulsoSzin = "red"
             }
         }
@@ -98,7 +98,7 @@ function startGame() {
         } else {
             if (e.button == 2) {
                 loves = false;
-                szin = "red";
+                gameWorld.player.kick = false;
                 kulsoSzin = "white";
             }
         }

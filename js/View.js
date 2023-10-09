@@ -28,19 +28,19 @@ export class View{
         ctx.fillRect(0, 0, 1000, 800);
     
     
-        this.drawWalls(this.canvas);
-    
+        this.drawWalls();
+        let szin = this.gameWorld.player.kick ? "red" : "blue";
         // rajzoljuk ki a kört a this.canvasra, adott color-al, adott x és y pozícióra
-        this.drawCircle(this.canvas, 22, "blue", this.gameWorld.player.body.position[0], this.gameWorld.player.body.position[1]);
+        this.drawCircle(22, szin, this.gameWorld.player.body.position[0], this.gameWorld.player.body.position[1]);
         // Rajzoljuk ki a labdát
-        this.drawCircle(this.canvas, this.labda.radius, this.labda.szin, this.gameWorld.ball.body.position[0], this.gameWorld.ball.body.position[1]);
+        this.drawCircle(this.labda.radius, this.labda.szin, this.gameWorld.ball.body.position[0], this.gameWorld.ball.body.position[1]);
     
         // ha van irányunk, nem nulla hosszú, rajzoljuk ki
         const length = Math.sqrt(this.directionX * this.directionX + this.directionY * this.directionY);
         if (length > 0) {
             const normX = this.directionX / length;
             const normY = this.directionY / length;
-            this.drawDirection(this.canvas, normX, normY);
+            this.drawDirection(normX, normY);
         }
         // kérjük a böngészőt, hogy szóljon, ha újra rajzolhatunk -> ezért hívjuk amúgy redraw-nak a függvényt
         // újra és újra rajzolunk amikor lehet...
@@ -53,10 +53,10 @@ export class View{
         ctx.strokeStyle = "white";
         ctx.lineWidth = 10;
         ctx.lineCap = "round";
-        this.drawWall(this.canvas, [0, 0], [1000, 0]);
-        this.drawWall(this.canvas, [1000, 0], [1000, 800]);
-        this.drawWall(this.canvas, [1000, 800], [0, 800]);
-        this.drawWall(this.canvas, [0, 800], [0, 0]);
+        this.drawWall([0, 0], [1000, 0]);
+        this.drawWall([1000, 0], [1000, 800]);
+        this.drawWall([1000, 800], [0, 800]);
+        this.drawWall([0, 800], [0, 0]);
         ctx.lineWidth = 1;
     
     }
