@@ -1,4 +1,5 @@
 import { World } from "./World.js";
+import { View } from "./View.js";
 document.getElementById("Start").addEventListener("click", ()=> startGame());
 
 
@@ -13,6 +14,7 @@ let loves = false;
 
 
 let gameWorld = new World();
+let view = new View(document.getElementById("gameCanvas"), gameWorld);
 
 function settingsPage() {
     if(menu.style.display = "block") {
@@ -35,7 +37,6 @@ function backPage() {
 
 
 function startGame() {
-    const gameCanvas = document.getElementById("gameCanvas");
     gameCanvas.width = window.innerWidth;
     gameCanvas.height = window.innerHeight;
     gameCanvas.style.display = "block"
@@ -48,20 +49,22 @@ function startGame() {
 
     
 
-    redraw(gameCanvas);
+    view.redraw();
 
-        // ez lesz a játéklogika loop
-        window.setInterval(() => {
-            // csak akkor számítunk irányt a körnek egérből, ha az isMouse beállítás igaz!
-            if (isMouse == true) {
-                // kiszámoljuk merre menjen a kör, egér alapján, targetX és Y segítségével
-                calculateDirectionFromMouse();
-            }
-    
-            // a fizikát is beröffentjük, 
-            // ez a függvényhívás frissíti a fizikát újra és újra
-            gameWorld.calculatePhysics(directionX, directionY, loves);
-        }, 1000 / 60); // ilyen időközönként, 1000/60 -> 60 fps-es fizika. minél nagyobb az fps, annál pontosabb a fizika, de annál több CPU kell neki
+    // ez lesz a játéklogika loop
+    window.setInterval(() => {
+        // csak akkor számítunk irányt a körnek egérből, ha az isMouse beállítás igaz!
+        if (isMouse == true) {
+            // kiszámoljuk merre menjen a kör, egér alapján, targetX és Y segítségével
+            calculateDirectionFromMouse();
+        }
+
+        // a fizikát is beröffentjük, 
+        // ez a függvényhívás frissíti a fizikát újra és újra
+        gameWorld.calculatePhysics(directionX, directionY, loves);
+        view.directionX = directionX;
+        view.directionY = directionY;
+    }, 1000 / 60); // ilyen időközönként, 1000/60 -> 60 fps-es fizika. minél nagyobb az fps, annál pontosabb a fizika, de annál több CPU kell neki
 
 
         // figyeljük, ha valaki a canvas-on mozgatja a kurzorját
@@ -203,88 +206,3 @@ function calculateDirectionFromMouse() {
     }
 }
 
-
-function redraw(canvas) {
-    const ctx = canvas.getContext("2d");
-
-    // tisztítsuk le a canvast minden rajzolás előtt!
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "gray";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "green";
-    ctx.fillRect(0, 0, 1000, 800);
-
-
-    drawWalls(canvas);
-
-    // rajzoljuk ki a kört a canvasra, adott color-al, adott x és y pozícióra
-    drawCircle(canvas, 22, szin, gameWorld.player.body.position[0], gameWorld.player.body.position[1]);
-    // Rajzoljuk ki a labdát
-    drawCircle(canvas, labda.radius, labda.szin, gameWorld.ball.body.position[0], gameWorld.ball.body.position[1]);
-
-    // ha van irányunk, nem nulla hosszú, rajzoljuk ki
-    const length = Math.sqrt(directionX * directionX + directionY * directionY);
-    if (length > 0) {
-        const normX = directionX / length;
-        const normY = directionY / length;
-        drawDirection(canvas, normX, normY);
-    }
-    // kérjük a böngészőt, hogy szóljon, ha újra rajzolhatunk -> ezért hívjuk amúgy redraw-nak a függvényt
-    // újra és újra rajzolunk amikor lehet...
-    window.requestAnimationFrame(() => redraw(canvas));
-}
-
-function drawWalls(canvas) {
-
-    const ctx = canvas.getContext("2d");
-    ctx.strokeStyle = "white";
-    ctx.lineWidth = 10;
-    ctx.lineCap = "round";
-    drawWall(canvas, [0, 0], [1000, 0]);
-    drawWall(canvas, [1000, 0], [1000, 800]);
-    drawWall(canvas, [1000, 800], [0, 800]);
-    drawWall(canvas, [0, 800], [0, 0]);
-    ctx.lineWidth = 1;
-
-}
-
-function drawWall(canvas, start, end) {
-
-    const ctx = canvas.getContext("2d");
-    ctx.beginPath();
-    ctx.moveTo(start[0], start[1]);
-    ctx.lineTo(end[0], end[1]);
-    ctx.stroke();
-    ctx.closePath();
-
-}
-
-
-//Labda
-const labda = {
-    radius: 8,  // A labda sugara
-    szin: "blue",  // A labda színe
-  };
-
-// rajzoljunk egy kört
-function drawCircle(canvas, radius, szin, x, y) {
-    const ctx = canvas.getContext("2d");
-    ctx.fillStyle = szin;
-    ctx.strokeStyle = "blue";
-    ctx.beginPath();
-    ctx.arc(x, y, radius, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
-    ctx.closePath();
-}
-
-function drawDirection(canvas, normX, normY) {
-    const ctx = canvas.getContext("2d");
-    ctx.strokeStyle = "black";
-    ctx.beginPath();
-    ctx.moveTo(gameWorld.player.body.position[0], gameWorld.player.body.position[1]);
-    ctx.lineTo(gameWorld.player.body.position[0] + normX * 22, gameWorld.player.body.position[1] + normY * 22);
-    ctx.stroke();
-    ctx.closePath();
-}
