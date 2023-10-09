@@ -1,13 +1,9 @@
 import { World } from "./World.js";
-import Materials from "./Materials.js";
-import { Player } from "./Player.js";
-import { Ball } from "./Ball.js";
 document.getElementById("Start").addEventListener("click", ()=> startGame());
 
 
 let targetX = 30;
 let targetY = 30;
-let lastTick = Date.now();
 let szin = "red";
 let kulsoSzin = "white";
 let directionX = 0;
@@ -17,8 +13,6 @@ let loves = false;
 
 
 let gameWorld = new World();
-let player = new Player();
-let ball = new Ball();
 
 function settingsPage() {
     if(menu.style.display = "block") {
@@ -52,9 +46,6 @@ function startGame() {
     footerJsVer.style.display = "none";
 
 
-    gameWorld.world.addBody(ball.body);
-    gameWorld.world.addBody(player.body);
-
     
 
     redraw(gameCanvas);
@@ -69,7 +60,7 @@ function startGame() {
     
             // a fizikát is beröffentjük, 
             // ez a függvényhívás frissíti a fizikát újra és újra
-            calculatePhysics();
+            gameWorld.calculatePhysics(directionX, directionY, loves);
         }, 1000 / 60); // ilyen időközönként, 1000/60 -> 60 fps-es fizika. minél nagyobb az fps, annál pontosabb a fizika, de annál több CPU kell neki
 
 
@@ -84,7 +75,7 @@ function startGame() {
     gameCanvas.addEventListener("mousedown", e => {
 
         if(e.button == 0){
-            ball.speed = 8;
+            gameWorld.ball.speed = 8;
         } else {
             if (e.button == 2) {
                 loves = true;
@@ -100,7 +91,7 @@ function startGame() {
     gameCanvas.addEventListener("mouseup", e => {
 
         if(e.button == 0){
-            ball.speed = 5;
+            gameWorld.ball.speed = 5;
         } else {
             if (e.button == 2) {
                 loves = false;
@@ -122,8 +113,8 @@ function startGame() {
             // le kell nulláznunk az irányokat, mert h nem, megy tovább a kör a target irányba ész nélkül
             directionX = 0;
             directionY = 0;
-            player.body.velocity[0] = 0;
-            player.body.velocity[1] = 0;
+            gameWorld.player.body.velocity[0] = 0;
+            gameWorld.player.body.velocity[1] = 0;
         }
 
         // ha mouse irányítás van, return -> nincs több tennivaló
@@ -133,7 +124,7 @@ function startGame() {
 
 
         if(e.key === "c") {
-            ball.speed = 8;
+            gameWorld.ball.speed = 8;
         }
 
         if(e.key === "x") {
@@ -156,7 +147,7 @@ function startGame() {
     });
 
     document.addEventListener("keyup", e => {
-        ball.speed = 5;
+        gameWorld.ball.speed = 5;
 
         if(e.key === "x") {
             szin = "red";
@@ -164,19 +155,19 @@ function startGame() {
 
         if (e.key == "ArrowRight") {
             directionX = 0;
-            player.body.velocity[0] = 0;
+            gameWorld.player.body.velocity[0] = 0;
         }
         if (e.key == "ArrowLeft") {
             directionX = 0;
-            player.body.velocity[0] = 0;
+            gameWorld.player.body.velocity[0] = 0;
         }
         if (e.key == "ArrowUp") {
             directionY = 0;
-            player.body.velocity[1] = 0;
+            gameWorld.player.body.velocity[1] = 0;
         }
         if (e.key == "ArrowDown") {
             directionY = 0;
-            player.body.velocity[1] = 0;
+            gameWorld.player.body.velocity[1] = 0;
         }
     });
 
@@ -188,8 +179,8 @@ function calculateDirectionFromMouse() {
     // merre is kéne a körnek mennie?
     // a dir az az vektor, ami összeköti a célpontot és a kör aktuális pozícióját
     // ezen a vektoron kellene a körnek haladnia
-    const dirX = (targetX - player.body.position[0]); // EZ NEM EGYSÉGVEKTOR MÉG!
-    const dirY = (targetY - player.body.position[1]); // EZ NEM EGYSÉGKEVTOR MÉG!
+    const dirX = (targetX - gameWorld.player.body.position[0]); // EZ NEM EGYSÉGVEKTOR MÉG!
+    const dirY = (targetY - gameWorld.player.body.position[1]); // EZ NEM EGYSÉGKEVTOR MÉG!
     
     // milyen messze vagyunk ?
     const length = Math.sqrt(dirX * dirX + dirY * dirY);
@@ -204,7 +195,7 @@ function calculateDirectionFromMouse() {
         // ezek után a fizika majd pakolgatja a jó irányba a kört!
         
     } else {
-        player.body.velocity = [0, 0];
+        gameWorld.player.body.velocity = [0, 0];
         // nem kell menni -> legyen az irány 0,0 azaz semerre se mutasson az irányvektor
         // a fizika nem fogja sehova se továbbpakolni a kört így szerencsére :)
         directionX = 0;
@@ -212,36 +203,6 @@ function calculateDirectionFromMouse() {
     }
 }
 
-function calculatePhysics() {
-    const deltaTime = Date.now() - lastTick;
-    gameWorld.world.step(deltaTime / 1000)
-
-    const length = Math.sqrt(directionX * directionX + directionY * directionY);
-    player.body.velocity = [0, 0];
-    if (length > 0) {
-        const normX = directionX / length;
-        const normY = directionY / length;
-
-        // x += normX * ball.speed * deltaTime / 100;
-        // y += normY * ball.speed * deltaTime / 100;
-        player.body.velocity = [normX * ball.speed * 50, normY * ball.speed * 50];
-
-    }
-
-    let tortentLoves = loves && gameWorld.world.overlapKeeper.bodiesAreOverlapping(player.body, ball.body);
-    if (tortentLoves) {
-
-        let lovesX = ball.body.position[0] - player.body.position[0];
-        let lovesY = ball.body.position[1] - player.body.position[1];
-        let normalizaltLoves = p2.vec2.create();
-        p2.vec2.normalize(normalizaltLoves, [lovesX, lovesY])
-
-        ball.body.velocity[0] = normalizaltLoves[0] * 1000;
-        ball.body.velocity[1] = normalizaltLoves[1] * 1000;
-
-    }
-    lastTick = Date.now();
-}
 
 function redraw(canvas) {
     const ctx = canvas.getContext("2d");
@@ -258,9 +219,9 @@ function redraw(canvas) {
     drawWalls(canvas);
 
     // rajzoljuk ki a kört a canvasra, adott color-al, adott x és y pozícióra
-    drawCircle(canvas, 22, szin, player.body.position[0], player.body.position[1]);
+    drawCircle(canvas, 22, szin, gameWorld.player.body.position[0], gameWorld.player.body.position[1]);
     // Rajzoljuk ki a labdát
-    drawCircle(canvas, labda.radius, labda.szin, ball.body.position[0], ball.body.position[1]);
+    drawCircle(canvas, labda.radius, labda.szin, gameWorld.ball.body.position[0], gameWorld.ball.body.position[1]);
 
     // ha van irányunk, nem nulla hosszú, rajzoljuk ki
     const length = Math.sqrt(directionX * directionX + directionY * directionY);
@@ -322,8 +283,8 @@ function drawDirection(canvas, normX, normY) {
     const ctx = canvas.getContext("2d");
     ctx.strokeStyle = "black";
     ctx.beginPath();
-    ctx.moveTo(player.body.position[0], player.body.position[1]);
-    ctx.lineTo(player.body.position[0] + normX * 22, player.body.position[1] + normY * 22);
+    ctx.moveTo(gameWorld.player.body.position[0], gameWorld.player.body.position[1]);
+    ctx.lineTo(gameWorld.player.body.position[0] + normX * 22, gameWorld.player.body.position[1] + normY * 22);
     ctx.stroke();
     ctx.closePath();
 }
