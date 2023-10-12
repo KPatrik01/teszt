@@ -41,10 +41,7 @@ function startGame() {
     gameCanvas.height = window.innerHeight;
     gameCanvas.style.display = "block"
     menu.style.display = "none";
-    hatterJs.style.display = "none";
-    hatterLogo.style.display = "none";
-    footerJs.style.display = "none";
-    footerJsVer.style.display = "none";
+
 
 
     
