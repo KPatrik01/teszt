@@ -15,16 +15,27 @@ export class World{
         this.fal3Shape = new p2.Plane({material: Materials.falMaterial});
         this.fal4 = new p2.Body();
         this.fal4Shape = new p2.Plane({material: Materials.falMaterial});
+
+        this.goalLine = new p2.Body();
+        this.goalLineShape = new p2.Plane({material: Materials.falMaterial});
+
+
         this.world.addContactMaterial(new p2.ContactMaterial(Materials.playerMaterial, Materials.ballMaterial, {friction: 500, restitution: 0}));
         this.world.addContactMaterial(new p2.ContactMaterial(Materials.playerMaterial, Materials.falMaterial, {friction: 0, stiffness: Number.POSITIVE_INFINITY}));
         this.fal1.addShape(this.fal1Shape, [0, 0], 0);
         this.fal2.addShape(this.fal2Shape, [0, 0], -Math.PI/2);
         this.fal3.addShape(this.fal3Shape, [1000, 0], Math.PI/2);
         this.fal4.addShape(this.fal4Shape, [1000, 800], Math.PI);
+
+        this.goalLine.addShape(this.goalLineShape, [500, 400], Math.PI/2);
+        
         this.world.addBody(this.fal1);
         this.world.addBody(this.fal2);
         this.world.addBody(this.fal3);
         this.world.addBody(this.fal4);
+
+        this.world.addBody(this.goalLine);
+
         this.ball = new Ball();
         this.player = new Player();
         this.world.addBody(this.ball.body);
