@@ -25,7 +25,7 @@ export class View{
         ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     
         ctx.fillStyle = "green";
-        ctx.fillRect(0, 0, 1000, 800);
+        ctx.fillRect(this.gameWorld.balSzel, this.gameWorld.felSzel, this.gameWorld.palyaSzelesseg, this.gameWorld.palyaMagassag);
     
     
         this.drawWalls();
@@ -53,10 +53,10 @@ export class View{
         ctx.strokeStyle = "white";
         ctx.lineWidth = 10;
         ctx.lineCap = "round";
-        this.drawWall([0, 0], [1000, 0]);
-        this.drawWall([1000, 0], [1000, 800]);
-        this.drawWall([1000, 800], [0, 800]);
-        this.drawWall([0, 800], [0, 0]);
+        this.drawWall([this.gameWorld.balSzel, this.gameWorld.felSzel], [this.gameWorld.jobbSzel, this.gameWorld.felSzel]);
+        this.drawWall([this.gameWorld.jobbSzel, this.gameWorld.felSzel], [this.gameWorld.jobbSzel, this.gameWorld.alSzel]);
+        this.drawWall([this.gameWorld.jobbSzel, this.gameWorld.alSzel], [this.gameWorld.balSzel, this.gameWorld.alSzel]);
+        this.drawWall([this.gameWorld.balSzel, this.gameWorld.alSzel], [this.gameWorld.balSzel, this.gameWorld.felSzel]);
         ctx.lineWidth = 1;
     
     }

@@ -7,27 +7,35 @@ export class World{
     constructor(){
         this.lastTick = Date.now();
         this.world = new p2.World({gravity: [0, 0]});
-        this.fal1 = new p2.Body();
-        this.fal1Shape = new p2.Plane({material: Materials.falMaterial});
-        this.fal2 = new p2.Body();
-        this.fal2Shape = new p2.Plane({material: Materials.falMaterial});
-        this.fal3 = new p2.Body();
-        this.fal3Shape = new p2.Plane({material: Materials.falMaterial});
-        this.fal4 = new p2.Body();
-        this.fal4Shape = new p2.Plane({material: Materials.falMaterial});
+        this.falFelso = new p2.Body();
+        this.falFelsoShape = new p2.Plane({material: Materials.falMaterial});
+        this.falBal = new p2.Body();
+        this.falBalShape = new p2.Plane({material: Materials.falMaterial});
+        this.falJobb = new p2.Body();
+        this.falJobbShape = new p2.Plane({material: Materials.falMaterial});
+        this.falAlso = new p2.Body();
+        this.falAlsoShape = new p2.Plane({material: Materials.falMaterial});
+
+        this.palyaSzelesseg = 1000;
+        this.palyaMagassag = 800;
+        this.balSzel = window.innerWidth/2-this.palyaSzelesseg/2;
+        this.jobbSzel = window.innerWidth/2+this.palyaSzelesseg/2;
+        this.alSzel = window.innerHeight/2+this.palyaMagassag/2;
+        this.felSzel = window.innerHeight/2-this.palyaMagassag/2;
+
 
 
         this.world.addContactMaterial(new p2.ContactMaterial(Materials.playerMaterial, Materials.ballMaterial, {friction: 500, restitution: 0}));
         this.world.addContactMaterial(new p2.ContactMaterial(Materials.playerMaterial, Materials.falMaterial, {friction: 0, stiffness: Number.POSITIVE_INFINITY}));
-        this.fal1.addShape(this.fal1Shape, [0, 0], 0);
-        this.fal2.addShape(this.fal2Shape, [0, 0], -Math.PI/2);
-        this.fal3.addShape(this.fal3Shape, [1000, 0], Math.PI/2);
-        this.fal4.addShape(this.fal4Shape, [1000, 800], Math.PI);
+        this.falFelso.addShape(this.falFelsoShape, [this.balSzel, this.felSzel], 0);
+        this.falBal.addShape(this.falBalShape, [this.balSzel, this.felSzel], -Math.PI/2);
+        this.falJobb.addShape(this.falJobbShape, [this.jobbSzel, this.alSzel], Math.PI/2);
+        this.falAlso.addShape(this.falAlsoShape, [this.jobbSzel, this.alSzel], Math.PI);
         
-        this.world.addBody(this.fal1);
-        this.world.addBody(this.fal2);
-        this.world.addBody(this.fal3);
-        this.world.addBody(this.fal4);
+        this.world.addBody(this.falFelso);
+        this.world.addBody(this.falBal);
+        this.world.addBody(this.falJobb);
+        this.world.addBody(this.falAlso);
 
         this.ball = new Ball();
         this.player = new Player();
