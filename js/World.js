@@ -29,8 +29,6 @@ export class World{
         this.world.addBody(this.fal3);
         this.world.addBody(this.fal4);
 
-        this.world.addBody(this.goalLine);
-
         this.ball = new Ball();
         this.player = new Player();
         this.world.addBody(this.ball.body);
