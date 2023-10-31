@@ -26,9 +26,13 @@ export class View{
     
         ctx.fillStyle = "green";
         ctx.fillRect(this.gameWorld.balSzel, this.gameWorld.felSzel, this.gameWorld.palyaSzelesseg, this.gameWorld.palyaMagassag);
-    
+
     
         this.drawWalls();
+
+        ctx.fillStyle = "red";
+        ctx.fillRect(this.gameWorld.balGoalSensor.position[0]-15, this.gameWorld.balGoalSensor.position[1]-this.gameWorld.kapuSzelesseg/2, 30, this.gameWorld.kapuSzelesseg);
+
         let szin = this.gameWorld.player.kick ? "red" : "blue";
         // rajzoljuk ki a kört a this.canvasra, adott color-al, adott x és y pozícióra
         this.drawCircle(22, szin, this.gameWorld.player.body.position[0], this.gameWorld.player.body.position[1]);

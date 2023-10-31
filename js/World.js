@@ -15,6 +15,8 @@ export class World{
         this.jobbSzel = window.innerWidth/2+this.palyaSzelesseg/2;
         this.alSzel = window.innerHeight/2+this.palyaMagassag/2;
         this.felSzel = window.innerHeight/2-this.palyaMagassag/2;
+        this.balGoalSensor = new p2.Body({collisionResponse: false});
+        this.balGoalSensorShape = new p2.Box({width: 30, height: this.kapuSzelesseg})
         this.falFelso = new p2.Body();
         this.falFelsoShape = new p2.Box({material: Materials.falMaterial, width: this.palyaSzelesseg+30, height: 30});
 
@@ -28,6 +30,9 @@ export class World{
         
         this.falAlso = new p2.Body();
         this.falAlsoShape = new p2.Box({material: Materials.falMaterial, width: this.palyaSzelesseg+30, height: 30});
+
+        this.balGoalSensor.position = [this.balSzel-30, this.felSzel+this.palyaMagassag/2]
+
         this.falFelso.position = [this.balSzel+this.palyaSzelesseg/2, this.felSzel-10];
 
         this.falBalFelso.position = [this.balSzel-10, this.felSzel+this.verticalFalHosszusag/2];
@@ -46,9 +51,11 @@ export class World{
         this.falBalFelso.addShape(this.falBalFelsoShape, [0, 0], 0);
         this.falBalAlso.addShape(this.falBalAlsoShape, [0, 0], 0);
 
+        this.balGoalSensor.addShape(this.balGoalSensorShape, [0, 0], 0);
         this.falJobb.addShape(this.falJobbShape, [0, 0], 0);
         this.falAlso.addShape(this.falAlsoShape, [0, 0], 0);
         
+        this.world.addBody(this.balGoalSensor);
         this.world.addBody(this.falFelso);
 
         this.world.addBody(this.falBalFelso);
@@ -61,6 +68,28 @@ export class World{
         this.player = new Player();
         this.world.addBody(this.ball.body);
         this.world.addBody(this.player.body);
+
+
+        this.world.on("beginContact", event => {
+
+            const bodies = [event.bodyA, event.bodyB];
+            const shapes = [event.shapeA, event.shapeB];
+
+            const ballIndex = bodies.findIndex(body => body == this.ball.body);
+            if(ballIndex < 0) {
+                return;
+            }
+
+            const other = bodies[1-ballIndex];
+
+            if(other == this.balGoalSensor) {
+                console.log("GOAL");
+                this.ball.body.position = [500, 500];
+                this.ball.body.velocity = [0, 0];
+            }
+
+        })
+
     }
 
     calculatePhysics(directionX, directionY, loves) {
