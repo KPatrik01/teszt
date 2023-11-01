@@ -11,6 +11,9 @@ export class PixiView{
         });
 
         document.body.appendChild(this.app.view);
+        this.app.ticker.add((delta) => {
+            this.fieldShape.redraw();
+        });
     }
     createWorld(){
         this.createFields()

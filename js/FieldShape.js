@@ -19,6 +19,7 @@ export class FieldShape{
         this.drawWall([this.field.jobbSzel, this.field.felSzel], [this.field.jobbSzel, this.field.alSzel]);
         this.drawWall([this.field.jobbSzel, this.field.alSzel], [this.field.balSzel, this.field.alSzel]);
         this.drawWall([this.field.balSzel, this.field.alSzel], [this.field.balSzel, this.field.felSzel]);
+        this.ballShape.redraw()
     }
     drawWall(start, end) {
         this.backgroundGraphics.lineStyle(5,0xFFFFFF)

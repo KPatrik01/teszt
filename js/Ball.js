@@ -9,5 +9,6 @@ export class Ball{
         this.shape = new p2.Circle({radius: this.radius, material: Materials.ballMaterial});
         this.body.addShape(this.shape);
         this.body.position = this.position;
+        this.body.velocity=[100,0]
     }
 }

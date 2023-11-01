@@ -8,7 +8,9 @@ export class BallShape{
     }
     redraw(){
         this.ballGraphics.beginFill(0x0000FF);
-        this.ballGraphics.drawCircle(this.ball.body.position[0],this.ball.body.position[1],this.ball.radius);
+        this.ballGraphics.drawCircle(0, 0,this.ball.radius);
         this.ballGraphics.endFill();
+        this.container.position.x=this.ball.body.position[0];
+        this.container.position.y=this.ball.body.position[1];
     }
 }
