@@ -94,7 +94,7 @@ export class World{
 
             if(other == this.balGoalSensor || other == this.jobbGoalSensor) {
                 console.log("GOAL");
-                this.ball.body.position = [500, 500];
+                this.ball.body.position = [1050, 500];
                 this.ball.body.velocity = [0, 0];
             }
 
