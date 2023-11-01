@@ -15,31 +15,37 @@ export class World{
         this.jobbSzel = window.innerWidth/2+this.palyaSzelesseg/2;
         this.alSzel = window.innerHeight/2+this.palyaMagassag/2;
         this.felSzel = window.innerHeight/2-this.palyaMagassag/2;
+
         this.balGoalSensor = new p2.Body({collisionResponse: false});
-        this.balGoalSensorShape = new p2.Box({width: 30, height: this.kapuSzelesseg})
+        this.balGoalSensorShape = new p2.Box({width: 30, height: this.kapuSzelesseg});
+        this.jobbGoalSensor = new p2.Body({collisionResponse: false});
+        this.jobbGoalSensorShape = new p2.Box({width: 30, height: this.kapuSzelesseg});
+
         this.falFelso = new p2.Body();
         this.falFelsoShape = new p2.Box({material: Materials.falMaterial, width: this.palyaSzelesseg+30, height: 30});
+        this.falAlso = new p2.Body();
+        this.falAlsoShape = new p2.Box({material: Materials.falMaterial, width: this.palyaSzelesseg+30, height: 30})
 
         this.falBalFelso = new p2.Body();
         this.falBalFelsoShape = new p2.Box({material: Materials.falMaterial, width: 30, height: this.verticalFalHosszusag});
         this.falBalAlso = new p2.Body();
         this.falBalAlsoShape = new p2.Box({material: Materials.falMaterial, width: 30, height: this.verticalFalHosszusag});
 
-        this.falJobb = new p2.Body();
-        this.falJobbShape = new p2.Box({material: Materials.falMaterial, width: 30, height: this.palyaMagassag+30});
-        
-        this.falAlso = new p2.Body();
-        this.falAlsoShape = new p2.Box({material: Materials.falMaterial, width: this.palyaSzelesseg+30, height: 30});
+        this.falJobbFelso = new p2.Body();
+        this.falJobbFelsoShape = new p2.Box({material: Materials.falMaterial, width: 30, height: this.verticalFalHosszusag});
+        this.falJobbAlso = new p2.Body();
+        this.falJobbAlsoShape = new p2.Box({material: Materials.falMaterial, width: 30, height: this.verticalFalHosszusag});
 
-        this.balGoalSensor.position = [this.balSzel-30, this.felSzel+this.palyaMagassag/2]
+        this.balGoalSensor.position = [this.balSzel-30, this.felSzel+this.palyaMagassag/2];
+        this.jobbGoalSensor.position = [this.jobbSzel+30, this.felSzel+this.palyaMagassag/2];
 
         this.falFelso.position = [this.balSzel+this.palyaSzelesseg/2, this.felSzel-10];
+        this.falAlso.position = [this.balSzel+this.palyaSzelesseg/2, this.alSzel+10];
 
         this.falBalFelso.position = [this.balSzel-10, this.felSzel+this.verticalFalHosszusag/2];
         this.falBalAlso.position = [this.balSzel-10, this.alSzel-this.verticalFalHosszusag/2];
-
-        this.falJobb.position = [this.jobbSzel+10, this.felSzel+this.palyaMagassag/2];
-        this.falAlso.position = [this.balSzel+this.palyaSzelesseg/2, this.alSzel+10];
+        this.falJobbFelso.position = [this.jobbSzel+10, this.felSzel+this.verticalFalHosszusag/2];
+        this.falJobbAlso.position = [this.jobbSzel+10, this.alSzel-this.verticalFalHosszusag/2];
         
 
 
@@ -47,22 +53,26 @@ export class World{
         this.world.addContactMaterial(new p2.ContactMaterial(Materials.playerMaterial, Materials.ballMaterial, {friction: 500, restitution: 0}));
         this.world.addContactMaterial(new p2.ContactMaterial(Materials.playerMaterial, Materials.falMaterial, {friction: 0, stiffness: Number.POSITIVE_INFINITY}));
         this.falFelso.addShape(this.falFelsoShape, [0, 0], 0);
+        this.falAlso.addShape(this.falAlsoShape, [0, 0], 0);
 
+        this.balGoalSensor.addShape(this.balGoalSensorShape, [0, 0], 0);
         this.falBalFelso.addShape(this.falBalFelsoShape, [0, 0], 0);
         this.falBalAlso.addShape(this.falBalAlsoShape, [0, 0], 0);
 
-        this.balGoalSensor.addShape(this.balGoalSensorShape, [0, 0], 0);
-        this.falJobb.addShape(this.falJobbShape, [0, 0], 0);
-        this.falAlso.addShape(this.falAlsoShape, [0, 0], 0);
+        this.jobbGoalSensor.addShape(this.jobbGoalSensorShape, [0, 0], 0);
+        this.falJobbFelso.addShape(this.falJobbFelsoShape, [0, 0], 0);
+        this.falJobbAlso.addShape(this.falJobbAlsoShape, [0, 0], 0);
         
         this.world.addBody(this.balGoalSensor);
+        this.world.addBody(this.jobbGoalSensor);
         this.world.addBody(this.falFelso);
+        this.world.addBody(this.falAlso);
 
         this.world.addBody(this.falBalFelso);
         this.world.addBody(this.falBalAlso);
 
-        this.world.addBody(this.falJobb);
-        this.world.addBody(this.falAlso);
+        this.world.addBody(this.falJobbFelso);
+        this.world.addBody(this.falJobbAlso);
 
         this.ball = new Ball();
         this.player = new Player();
@@ -82,7 +92,7 @@ export class World{
 
             const other = bodies[1-ballIndex];
 
-            if(other == this.balGoalSensor) {
+            if(other == this.balGoalSensor || other == this.jobbGoalSensor) {
                 console.log("GOAL");
                 this.ball.body.position = [500, 500];
                 this.ball.body.velocity = [0, 0];

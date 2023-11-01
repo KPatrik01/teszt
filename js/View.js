@@ -32,6 +32,7 @@ export class View{
 
         ctx.fillStyle = "red";
         ctx.fillRect(this.gameWorld.balGoalSensor.position[0]-15, this.gameWorld.balGoalSensor.position[1]-this.gameWorld.kapuSzelesseg/2, 30, this.gameWorld.kapuSzelesseg);
+        ctx.fillRect(this.gameWorld.jobbGoalSensor.position[0]-15, this.gameWorld.jobbGoalSensor.position[1]-this.gameWorld.kapuSzelesseg/2, 30, this.gameWorld.kapuSzelesseg);
 
         let szin = this.gameWorld.player.kick ? "red" : "blue";
         // rajzoljuk ki a kört a this.canvasra, adott color-al, adott x és y pozícióra
