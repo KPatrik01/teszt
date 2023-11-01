@@ -1,5 +1,6 @@
 import { World } from "./World.js";
-import { View } from "./View.js";
+import { View } from "./CanvasView.js";
+import { PixiView } from "./PixiView.js";
 document.getElementById("Start").addEventListener("click", ()=> startGame());
 
 
@@ -14,7 +15,6 @@ let loves = false;
 
 
 let gameWorld = new World();
-let view = new View(document.getElementById("gameCanvas"), gameWorld);
 
 function settingsPage() {
     if(menu.style.display = "block") {
@@ -37,16 +37,13 @@ function backPage() {
 
 
 function startGame() {
-    gameCanvas.width = window.innerWidth;
-    gameCanvas.height = window.innerHeight;
-    gameCanvas.style.display = "block"
+    const pixiView = new PixiView(gameWorld);
     menu.style.display = "none";
 
 
 
     
 
-    view.redraw();
 
     // ez lesz a játéklogika loop
     window.setInterval(() => {
@@ -59,48 +56,46 @@ function startGame() {
         // a fizikát is beröffentjük, 
         // ez a függvényhívás frissíti a fizikát újra és újra
         gameWorld.calculatePhysics(directionX, directionY, loves);
-        view.directionX = directionX;
-        view.directionY = directionY;
     }, 1000 / 60); // ilyen időközönként, 1000/60 -> 60 fps-es fizika. minél nagyobb az fps, annál pontosabb a fizika, de annál több CPU kell neki
 
 
         // figyeljük, ha valaki a canvas-on mozgatja a kurzorját
-    gameCanvas.addEventListener("mousemove", e => { // e az a mouse event
-            // frissítsük be a célpontunk koordinátáit. 
-        targetX = e.offsetX; // e.offsetX az az egér aktuális x pozíciója
-        targetY = e.offsetY; // e.offsetY az az egér aktuális y pozíciója
-    });
+    // gameCanvas.addEventListener("mousemove", e => { // e az a mouse event
+    //         // frissítsük be a célpontunk koordinátáit. 
+    //     targetX = e.offsetX; // e.offsetX az az egér aktuális x pozíciója
+    //     targetY = e.offsetY; // e.offsetY az az egér aktuális y pozíciója
+    // });
 
 
-    gameCanvas.addEventListener("mousedown", e => {
+    // gameCanvas.addEventListener("mousedown", e => {
 
-        if(e.button == 0){
-            gameWorld.player.speed = 8;
-        } else {
-            if (e.button == 2) {
-                loves = true;
-                gameWorld.player.kick = true;
-                kulsoSzin = "red"
-            }
-        }
+    //     if(e.button == 0){
+    //         gameWorld.player.speed = 8;
+    //     } else {
+    //         if (e.button == 2) {
+    //             loves = true;
+    //             gameWorld.player.kick = true;
+    //             kulsoSzin = "red"
+    //         }
+    //     }
 
         
 
-    });
+    // });
     
-    gameCanvas.addEventListener("mouseup", e => {
+    // gameCanvas.addEventListener("mouseup", e => {
 
-        if(e.button == 0){
-            gameWorld.player.speed = 5;
-        } else {
-            if (e.button == 2) {
-                loves = false;
-                gameWorld.player.kick = false;
-                kulsoSzin = "white";
-            }
-        }
+    //     if(e.button == 0){
+    //         gameWorld.player.speed = 5;
+    //     } else {
+    //         if (e.button == 2) {
+    //             loves = false;
+    //             gameWorld.player.kick = false;
+    //             kulsoSzin = "white";
+    //         }
+    //     }
 
-    });
+    // });
 
 
     // figyeljük a billentyű lenyomást
