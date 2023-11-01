@@ -75,7 +75,7 @@ function startGame() {
     gameCanvas.addEventListener("mousedown", e => {
 
         if(e.button == 0){
-            gameWorld.ball.speed = 8;
+            gameWorld.player.speed = 8;
         } else {
             if (e.button == 2) {
                 loves = true;
@@ -91,7 +91,7 @@ function startGame() {
     gameCanvas.addEventListener("mouseup", e => {
 
         if(e.button == 0){
-            gameWorld.ball.speed = 5;
+            gameWorld.player.speed = 5;
         } else {
             if (e.button == 2) {
                 loves = false;
@@ -124,7 +124,7 @@ function startGame() {
 
 
         if(e.key === "c") {
-            gameWorld.ball.speed = 8;
+            gameWorld.player.speed = 8;
         }
 
         if(e.key === "x") {
@@ -147,7 +147,7 @@ function startGame() {
     });
 
     document.addEventListener("keyup", e => {
-        gameWorld.ball.speed = 5;
+        gameWorld.player.speed = 5;
 
         if(e.key === "x") {
             szin = "red";

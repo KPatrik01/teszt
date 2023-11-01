@@ -25,20 +25,20 @@ export class View{
         ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     
         ctx.fillStyle = "green";
-        ctx.fillRect(this.gameWorld.balSzel, this.gameWorld.felSzel, this.gameWorld.palyaSzelesseg, this.gameWorld.palyaMagassag);
+        ctx.fillRect(this.gameWorld.field.balSzel, this.gameWorld.field.felSzel, this.gameWorld.field.palyaSzelesseg, this.gameWorld.field.palyaMagassag);
 
     
         this.drawWalls();
 
         ctx.fillStyle = "red";
-        ctx.fillRect(this.gameWorld.balGoalSensor.position[0]-15, this.gameWorld.balGoalSensor.position[1]-this.gameWorld.kapuSzelesseg/2, 30, this.gameWorld.kapuSzelesseg);
-        ctx.fillRect(this.gameWorld.jobbGoalSensor.position[0]-15, this.gameWorld.jobbGoalSensor.position[1]-this.gameWorld.kapuSzelesseg/2, 30, this.gameWorld.kapuSzelesseg);
+        ctx.fillRect(this.gameWorld.field.balGoalSensor.position[0]-15, this.gameWorld.field.balGoalSensor.position[1]-this.gameWorld.field.kapuSzelesseg/2, 30, this.gameWorld.field.kapuSzelesseg);
+        ctx.fillRect(this.gameWorld.field.jobbGoalSensor.position[0]-15, this.gameWorld.field.jobbGoalSensor.position[1]-this.gameWorld.field.kapuSzelesseg/2, 30, this.gameWorld.field.kapuSzelesseg);
 
         let szin = this.gameWorld.player.kick ? "red" : "blue";
         // rajzoljuk ki a kört a this.canvasra, adott color-al, adott x és y pozícióra
         this.drawCircle(22, szin, this.gameWorld.player.body.position[0], this.gameWorld.player.body.position[1]);
         // Rajzoljuk ki a labdát
-        this.drawCircle(this.labda.radius, this.labda.szin, this.gameWorld.ball.body.position[0], this.gameWorld.ball.body.position[1]);
+        this.drawCircle(this.labda.radius, this.labda.szin, this.gameWorld.field.ball.body.position[0], this.gameWorld.field.ball.body.position[1]);
     
         // ha van irányunk, nem nulla hosszú, rajzoljuk ki
         const length = Math.sqrt(this.directionX * this.directionX + this.directionY * this.directionY);
@@ -58,10 +58,10 @@ export class View{
         ctx.strokeStyle = "white";
         ctx.lineWidth = 10;
         ctx.lineCap = "round";
-        this.drawWall([this.gameWorld.balSzel, this.gameWorld.felSzel], [this.gameWorld.jobbSzel, this.gameWorld.felSzel]);
-        this.drawWall([this.gameWorld.jobbSzel, this.gameWorld.felSzel], [this.gameWorld.jobbSzel, this.gameWorld.alSzel]);
-        this.drawWall([this.gameWorld.jobbSzel, this.gameWorld.alSzel], [this.gameWorld.balSzel, this.gameWorld.alSzel]);
-        this.drawWall([this.gameWorld.balSzel, this.gameWorld.alSzel], [this.gameWorld.balSzel, this.gameWorld.felSzel]);
+        this.drawWall([this.gameWorld.field.balSzel, this.gameWorld.field.felSzel], [this.gameWorld.field.jobbSzel, this.gameWorld.field.felSzel]);
+        this.drawWall([this.gameWorld.field.jobbSzel, this.gameWorld.field.felSzel], [this.gameWorld.field.jobbSzel, this.gameWorld.field.alSzel]);
+        this.drawWall([this.gameWorld.field.jobbSzel, this.gameWorld.field.alSzel], [this.gameWorld.field.balSzel, this.gameWorld.field.alSzel]);
+        this.drawWall([this.gameWorld.field.balSzel, this.gameWorld.field.alSzel], [this.gameWorld.field.balSzel, this.gameWorld.field.felSzel]);
         ctx.lineWidth = 1;
     
     }
