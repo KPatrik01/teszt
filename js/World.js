@@ -96,6 +96,7 @@ export class World{
                 console.log("GOAL");
                 this.ball.body.position = [1050, 500];
                 this.ball.body.velocity = [0, 0];
+                
             }
 
         })
