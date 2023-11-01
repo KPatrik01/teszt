@@ -1,16 +1,14 @@
 export class FieldShape{
-    constructor(){
+    constructor(field){
+        this.field = field
         this.container = new PIXI.Container();
-        this.korGraphics = new PIXI.Graphics();
-        this.container.addChild(this.korGraphics)
-        this.szinek=[0xFFFFFF,0xFF0000,0x0000FF,0x00FF00,0x000000];
-        this.szinMost=0
+        this.backgroundGraphics = new PIXI.Graphics();
+        this.container.addChild(this.backgroundGraphics)
         this.redraw()
     }
     redraw(){
-        this.korGraphics.beginFill(this.szinek[this.szinMost]);
-        this.korGraphics.drawCircle(1000,500,30);
-        this.korGraphics.endFill();
-        this.szinMost=(this.szinMost+1)%5;
+        this.backgroundGraphics.beginFill(0x13B600);
+        this.backgroundGraphics.drawRect(this.field.balSzel,this.field.felSzel,this.field.palyaSzelesseg,this.field.palyaMagassag);
+        this.backgroundGraphics.endFill();
     }
 }

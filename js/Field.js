@@ -8,7 +8,7 @@ export class Field{
         this.position = position;
         this.player = player;
         this.palyaSzelesseg = 1000;
-        this.palyaMagassag = 800;
+        this.palyaMagassag = 700;
         this.kapuSzelesseg = 200;
         this.verticalFalHosszusag = (this.palyaMagassag - this.kapuSzelesseg)/2
         this.balSzel = this.position[0]-this.palyaSzelesseg/2;

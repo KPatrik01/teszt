@@ -38,6 +38,7 @@ function backPage() {
 
 function startGame() {
     const pixiView = new PixiView(gameWorld);
+    pixiView.createWorld()
     menu.style.display = "none";
 
 
