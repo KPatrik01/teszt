@@ -1,6 +1,7 @@
 import { Field } from "./Field.js";
 import { FieldShape } from "./FieldShape.js";
 import { PlayerShape } from "./PlayerShape.js";
+import { InputHandler } from "./InputHandler.js";
 
 export class PixiView{
     constructor(gameWorld){
@@ -12,9 +13,15 @@ export class PixiView{
         });
 
         document.body.appendChild(this.app.view);
+        
+        this.inputHandler = new InputHandler();
         this.app.ticker.add((delta) => {
             this.fieldShape.update();
             this.playerShape.update();
+            const input = this.inputHandler.getInputFromKeyboard();
+            if(input.move==true){
+                console.log(input);
+            }
         });
     }
     createWorld(){
