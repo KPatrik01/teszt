@@ -71,7 +71,7 @@ export class Field{
         this.world.addBody(this.falJobbAlso);
 
 
-        this.ball = new Ball(this.position);
+        this.ball = new Ball([this.position[0],this.position[1]]);
 
 
         this.world.addBody(this.ball.body);
@@ -90,9 +90,7 @@ export class Field{
 
             if(other == this.balGoalSensor || other == this.jobbGoalSensor) {
                 console.log("GOAL");
-                this.ball.body.position = [1050, 500];
-                this.ball.body.velocity = [0, 0];
-                
+                setTimeout(()=> this.resetBall(),10)
             }
 
         })
@@ -112,5 +110,10 @@ export class Field{
             this.ball.body.velocity[1] = normalizaltLoves[1] * 1000;
     
         }
+    }
+    resetBall(){
+        this.ball.body.position[0] = this.position[0];
+        this.ball.body.position[1] = this.position[1];
+        this.ball.body.velocity = [0, 0];
     }
 }
