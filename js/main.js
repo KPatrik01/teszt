@@ -100,76 +100,76 @@ function startGame() {
 
 
     // figyeljük a billentyű lenyomást
-    document.addEventListener("keydown", e => {
-        // megnyomta az m-et?
-        if(e.key === "m") {
-            // kapcsoljuk át -> ! jel ellenkezőjére állítja, így fog müködni tovább a program
-            isMouse = !isMouse;
+//     document.addEventListener("keydown", e => {
+//         // megnyomta az m-et?
+//         if(e.key === "m") {
+//             // kapcsoljuk át -> ! jel ellenkezőjére állítja, így fog müködni tovább a program
+//             isMouse = !isMouse;
 
-            // le kell nulláznunk az irányokat, mert h nem, megy tovább a kör a target irányba ész nélkül
-            directionX = 0;
-            directionY = 0;
-            gameWorld.player.body.velocity[0] = 0;
-            gameWorld.player.body.velocity[1] = 0;
-        }
+//             // le kell nulláznunk az irányokat, mert h nem, megy tovább a kör a target irányba ész nélkül
+//             directionX = 0;
+//             directionY = 0;
+//             gameWorld.player.body.velocity[0] = 0;
+//             gameWorld.player.body.velocity[1] = 0;
+//         }
 
-        // ha mouse irányítás van, return -> nincs több tennivaló
-        if (isMouse) {
-            return;
-        }
+//         // ha mouse irányítás van, return -> nincs több tennivaló
+//         if (isMouse) {
+//             return;
+//         }
 
 
-        if(e.key === "c") {
-            gameWorld.player.speed = 8;
-        }
+//         if(e.key === "c") {
+//             gameWorld.player.speed = 8;
+//         }
 
-        if(e.key === "x") {
-            loves = true;
-            gameWorld.player.kick = true;
-            szin = "green";
-        }
+//         if(e.key === "x") {
+//             loves = true;
+//             gameWorld.player.kick = true;
+//             szin = "green";
+//         }
 
-        // kezeljük le az irányokat
-        if (e.key == "ArrowRight") {
-            directionX = 1;
-        }
-        if (e.key == "ArrowLeft") {
-            directionX = -1;
-        }
-        if (e.key == "ArrowUp") {
-            directionY = -1;
-        }
-        if (e.key == "ArrowDown") {
-            directionY = 1;
-        }
-    });
+//         // kezeljük le az irányokat
+//         if (e.key == "ArrowRight") {
+//             directionX = 1;
+//         }
+//         if (e.key == "ArrowLeft") {
+//             directionX = -1;
+//         }
+//         if (e.key == "ArrowUp") {
+//             directionY = -1;
+//         }
+//         if (e.key == "ArrowDown") {
+//             directionY = 1;
+//         }
+//     });
 
-    document.addEventListener("keyup", e => {
-        gameWorld.player.speed = 5;
+//     document.addEventListener("keyup", e => {
+//         gameWorld.player.speed = 5;
 
-        if(e.key === "x") {
-            loves = false;
-            gameWorld.player.kick = false;
-            szin = "red";
-        }
+//         if(e.key === "x") {
+//             loves = false;
+//             gameWorld.player.kick = false;
+//             szin = "red";
+//         }
 
-        if (e.key == "ArrowRight") {
-            directionX = 0;
-            gameWorld.player.body.velocity[0] = 0;
-        }
-        if (e.key == "ArrowLeft") {
-            directionX = 0;
-            gameWorld.player.body.velocity[0] = 0;
-        }
-        if (e.key == "ArrowUp") {
-            directionY = 0;
-            gameWorld.player.body.velocity[1] = 0;
-        }
-        if (e.key == "ArrowDown") {
-            directionY = 0;
-            gameWorld.player.body.velocity[1] = 0;
-        }
-    });
+//         if (e.key == "ArrowRight") {
+//             directionX = 0;
+//             gameWorld.player.body.velocity[0] = 0;
+//         }
+//         if (e.key == "ArrowLeft") {
+//             directionX = 0;
+//             gameWorld.player.body.velocity[0] = 0;
+//         }
+//         if (e.key == "ArrowUp") {
+//             directionY = 0;
+//             gameWorld.player.body.velocity[1] = 0;
+//         }
+//         if (e.key == "ArrowDown") {
+//             directionY = 0;
+//             gameWorld.player.body.velocity[1] = 0;
+//         }
+//     });
 
 
 

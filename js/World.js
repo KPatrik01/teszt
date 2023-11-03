@@ -19,23 +19,11 @@ export class World{
         this.world.addBody(this.player.body);
     }
 
-    calculatePhysics(directionX, directionY, loves) {
+    calculatePhysics() {
         const deltaTime = Date.now() - this.lastTick;
         this.world.step(deltaTime / 1000)
-    
-        const length = Math.sqrt(directionX * directionX + directionY * directionY);
-        this.player.body.velocity = [0, 0];
-        if (length > 0) {
-            const normX = directionX / length;
-            const normY = directionY / length;
-    
-            // x += normX * player.speed * deltaTime / 100;
-            // y += normY * player.speed * deltaTime / 100;
-            this.player.body.velocity = [normX * this.player.speed * 50, normY * this.player.speed * 50];
-    
-        }
-    
-        this.field.calculatePhysics(loves)
+        this.player.processInput()
+        this.field.calculatePhysics()
         this.lastTick = Date.now();
     }
 }

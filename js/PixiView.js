@@ -19,9 +19,7 @@ export class PixiView{
             this.fieldShape.update();
             this.playerShape.update();
             const input = this.inputHandler.getInputFromKeyboard();
-            if(input.move==true){
-                console.log(input);
-            }
+            gameWorld.player.input=input;
         });
     }
     createWorld(){

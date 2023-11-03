@@ -29,10 +29,12 @@ export class InputHandler{
             dirY+=1;
         }
         let kick=this.isPressed(" ") || this.isPressed("x");
+        let sprint=this.isPressed("c") || this.isPressed("q");
         return {
             move: (dirX!=0 || dirY!=0),
             angle: Math.atan2(dirY,dirX),
-            kick: kick
+            kick: kick,
+            sprint: sprint
         }
     }
     isPressed(keyCode){
