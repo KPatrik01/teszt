@@ -124,6 +124,8 @@ function startGame() {
         }
 
         if(e.key === "x") {
+            loves = true;
+            gameWorld.player.kick = true;
             szin = "green";
         }
 
@@ -146,6 +148,8 @@ function startGame() {
         gameWorld.player.speed = 5;
 
         if(e.key === "x") {
+            loves = false;
+            gameWorld.player.kick = false;
             szin = "red";
         }
 
