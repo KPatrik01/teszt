@@ -99,8 +99,8 @@ export class Field{
         
     }
 
-    calculatePhysics(loves){
-        let tortentLoves = loves && this.world.overlapKeeper.bodiesAreOverlapping(this.player.body, this.ball.body);
+    calculatePhysics(){
+        let tortentLoves = this.player.kick && this.world.overlapKeeper.bodiesAreOverlapping(this.player.body, this.ball.body);
         if (tortentLoves) {
     
             let lovesX = this.ball.body.position[0] - this.player.body.position[0];

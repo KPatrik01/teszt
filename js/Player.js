@@ -17,6 +17,7 @@ export class Player{
         } else {
             this.speed=250;
         }
+        this.kick = this.input.kick
         if (this.input.move == true){
             this.body.velocity=[
                 this.speed*Math.cos(this.input.angle),
