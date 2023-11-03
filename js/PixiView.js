@@ -1,5 +1,6 @@
 import { Field } from "./Field.js";
 import { FieldShape } from "./FieldShape.js";
+import { PlayerShape } from "./PlayerShape.js";
 
 export class PixiView{
     constructor(gameWorld){
@@ -13,14 +14,21 @@ export class PixiView{
         document.body.appendChild(this.app.view);
         this.app.ticker.add((delta) => {
             this.fieldShape.redraw();
+            this.playerShape.redraw();
         });
     }
     createWorld(){
-        this.createFields()
+        this.createFields();
+        this.spawnPlayer();
     }
     createFields(){
         this.fieldShape = new FieldShape(this.gameWorld.field);
         this.app.stage.addChild(this.fieldShape.container);
-        this.fieldShape.redraw()
+        this.fieldShape.redraw();
+    }
+    spawnPlayer(){
+        this.playerShape = new PlayerShape(this.gameWorld.player);
+        this.app.stage.addChild(this.playerShape.container);
+        this.playerShape.redraw();
     }
 }
