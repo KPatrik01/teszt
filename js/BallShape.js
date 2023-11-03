@@ -10,6 +10,8 @@ export class BallShape{
         this.ballGraphics.beginFill(0x0000FF);
         this.ballGraphics.drawCircle(0, 0,this.ball.radius);
         this.ballGraphics.endFill();
+    }
+    update(){
         this.container.position.x=this.ball.body.position[0];
         this.container.position.y=this.ball.body.position[1];
     }

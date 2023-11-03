@@ -13,8 +13,8 @@ export class PixiView{
 
         document.body.appendChild(this.app.view);
         this.app.ticker.add((delta) => {
-            this.fieldShape.redraw();
-            this.playerShape.redraw();
+            this.fieldShape.update();
+            this.playerShape.update();
         });
     }
     createWorld(){

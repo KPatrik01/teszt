@@ -27,4 +27,7 @@ export class FieldShape{
         this.backgroundGraphics.lineTo(end[0], end[1]);
     
     }
+    update(){
+        this.ballShape.update();
+    }
 }

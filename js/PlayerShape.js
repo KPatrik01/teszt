@@ -10,6 +10,8 @@ export class PlayerShape{
         this.playerGraphics.beginFill(0x0000FF);
         this.playerGraphics.drawCircle(0, 0,this.player.radius);
         this.playerGraphics.endFill();
+    }
+    update(){
         this.container.position.x=this.player.body.position[0];
         this.container.position.y=this.player.body.position[1];
     }
