@@ -8,7 +8,7 @@ export class PixiView{
     constructor(gameWorld){
         this.gameWorld = gameWorld;
         this.camera = new Camera(this);
-        
+        this.fieldShapes = []
         this.app = new PIXI.Application({
             background: '#1099bb',
             resizeTo: window,
@@ -18,7 +18,9 @@ export class PixiView{
         
         this.inputHandler = new InputHandler();
         this.app.ticker.add((delta) => {
-            this.fieldShape.update();
+            this.fieldShapes.forEach(fieldshape => {
+                fieldshape.update();
+            });
             this.playerShape.update();
             const input = this.inputHandler.getInputFromKeyboard();
             gameWorld.player.input=input;
@@ -30,9 +32,12 @@ export class PixiView{
         this.spawnPlayer();
     }
     createFields(){
-        this.fieldShape = new FieldShape(this.gameWorld.field);
-        this.app.stage.addChild(this.fieldShape.container);
-        this.fieldShape.redraw();
+        this.gameWorld.fields.forEach(field => {
+            const fieldshape = new FieldShape(field);
+            this.fieldShapes.push(fieldshape);
+            this.app.stage.addChild(fieldshape.container);
+            fieldshape.redraw();
+        });
     }
     spawnPlayer(){
         this.playerShape = new PlayerShape(this.gameWorld.player);

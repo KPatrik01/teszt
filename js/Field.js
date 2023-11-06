@@ -4,13 +4,13 @@ import collisionGroups from "./CollisionGroups.js";
 
 
 export class Field{
-    constructor(world, position,player){
+    constructor(world, position,player, palyaSzelesseg, palyaMagassag, kapuSzelesseg){
         this.world = world;
         this.position = position;
         this.player = player;
-        this.palyaSzelesseg = 1000;
-        this.palyaMagassag = 700;
-        this.kapuSzelesseg = 200;
+        this.palyaSzelesseg = palyaSzelesseg;
+        this.palyaMagassag = palyaMagassag;
+        this.kapuSzelesseg = kapuSzelesseg;
         this.postRadius = 3;
         this.verticalFalHosszusag = (this.palyaMagassag - this.kapuSzelesseg)/2
         this.balSzel = this.position[0]-this.palyaSzelesseg/2;
@@ -107,12 +107,19 @@ export class Field{
         this.jobbKapuFal1 = new p2.Body();
         this.jobbKapuFal2 = new p2.Body();
         this.jobbKapuFal3 = new p2.Body();
-        this.balKapuFal1Shape = new p2.Box({material: Materials.falMaterial, width: this.verticalFalHosszusag/8, height: 30, collisionGroup: collisionGroups.fal, collisionMask: collisionGroups.ball})
-        this.balKapuFal2Shape = new p2.Box({material: Materials.falMaterial, width: 30, height: this.kapuSzelesseg, collisionGroup: collisionGroups.fal, collisionMask: collisionGroups.ball})
-        this.balKapuFal3Shape = new p2.Box({material: Materials.falMaterial, width: this.verticalFalHosszusag/8, height: 30, collisionGroup: collisionGroups.fal, collisionMask: collisionGroups.ball})
-        this.jobbKapuFal1Shape = new p2.Box({material: Materials.falMaterial, width: this.verticalFalHosszusag/8, height: 30, collisionGroup: collisionGroups.fal, collisionMask: collisionGroups.ball})
-        this.jobbKapuFal2Shape = new p2.Box({material: Materials.falMaterial, width: 30, height: this.kapuSzelesseg, collisionGroup: collisionGroups.fal, collisionMask: collisionGroups.ball})
-        this.jobbKapuFal3Shape = new p2.Box({material: Materials.falMaterial, width: this.verticalFalHosszusag/8, height: 30, collisionGroup: collisionGroups.fal, collisionMask: collisionGroups.ball})
+        this.balKapuFal1Shape = new p2.Box({
+            material: Materials.goalMaterial, 
+            width: this.verticalFalHosszusag/8, 
+            height: 30, 
+            collisionGroup: collisionGroups.fal, 
+            collisionMask: collisionGroups.ball
+        })
+        this.balKapuFal2Shape = new p2.Box({
+            material: Materials.goalMaterial, width: 30, height: this.kapuSzelesseg, collisionGroup: collisionGroups.fal, collisionMask: collisionGroups.ball})
+        this.balKapuFal3Shape = new p2.Box({material: Materials.goalMaterial, width: this.verticalFalHosszusag/8, height: 30, collisionGroup: collisionGroups.fal, collisionMask: collisionGroups.ball})
+        this.jobbKapuFal1Shape = new p2.Box({material: Materials.goalMaterial, width: this.verticalFalHosszusag/8, height: 30, collisionGroup: collisionGroups.fal, collisionMask: collisionGroups.ball})
+        this.jobbKapuFal2Shape = new p2.Box({material: Materials.goalMaterial, width: 30, height: this.kapuSzelesseg, collisionGroup: collisionGroups.fal, collisionMask: collisionGroups.ball})
+        this.jobbKapuFal3Shape = new p2.Box({material: Materials.goalMaterial, width: this.verticalFalHosszusag/8, height: 30, collisionGroup: collisionGroups.fal, collisionMask: collisionGroups.ball})
 
         this.balKapuFal1.position = [this.balSzel - this.verticalFalHosszusag/16, this.felSzel + this.verticalFalHosszusag-10];
         this.balKapuFal2.position = [this.balSzel - (this.verticalFalHosszusag/8)-10, this.felSzel + this.palyaMagassag/2];

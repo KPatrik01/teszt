@@ -5,7 +5,7 @@ import collisionGroups from "./CollisionGroups.js";
 export class Player{
     constructor(){
         this.radius = 22;
-        this.speed = 250;
+        this.speed = 200;
         this.kick = false;
         this.body = new p2.Body({mass: 1, damping: 0, angularDamping: 0, fixedRotation: true});
         this.shape = new p2.Circle({radius: this.radius, material: Materials.playerMaterial, collisionGroup: collisionGroups.player, collisionMask: collisionGroups.ball | collisionGroups.fal});
