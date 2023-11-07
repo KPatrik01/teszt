@@ -1,8 +1,12 @@
+
+
+
 export class InputHandler{
-    constructor(){
+    constructor(camera){
+        this.camera = camera;
         this.keyPressed = new Map();
-        window.addEventListener("keydown", this.onKeyDown.bind(this))
-        window.addEventListener("keyup", this.onKeyUp.bind(this))
+        window.addEventListener("keydown", this.onKeyDown.bind(this));
+        window.addEventListener("keyup", this.onKeyUp.bind(this));
     }
     onKeyDown(e){
         this.keyPressed.set(e.key.toLowerCase(), true);

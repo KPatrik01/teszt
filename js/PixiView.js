@@ -7,16 +7,16 @@ import { Camera } from "./Camera.js";
 export class PixiView{
     constructor(gameWorld){
         this.gameWorld = gameWorld;
-        this.camera = new Camera(this);
         this.fieldShapes = []
         this.app = new PIXI.Application({
             background: '#1099bb',
             resizeTo: window,
         });
+        this.camera = new Camera(this);
 
         document.body.appendChild(this.app.view);
         
-        this.inputHandler = new InputHandler();
+        this.inputHandler = new InputHandler(this.camera);
         this.app.ticker.add((delta) => {
             this.fieldShapes.forEach(fieldshape => {
                 fieldshape.update();
