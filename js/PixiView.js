@@ -16,13 +16,13 @@ export class PixiView{
 
         document.body.appendChild(this.app.view);
         
-        this.inputHandler = new InputHandler(this.camera);
+        this.inputHandler = new InputHandler(this.camera,this);
         this.app.ticker.add((delta) => {
             this.fieldShapes.forEach(fieldshape => {
                 fieldshape.update();
             });
             this.playerShape.update();
-            const input = this.inputHandler.getInputFromKeyboard();
+            const input = this.inputHandler.getInput(this.gameWorld.player);
             gameWorld.player.input=input;
             this.camera.update();
         });

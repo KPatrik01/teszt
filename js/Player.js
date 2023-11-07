@@ -19,10 +19,11 @@ export class Player{
             this.speed=250;
         }
         this.kick = this.input.kick
-        if (this.input.move == true){
+        if (this.input.move){
+            const finalSpeed = this.speed*Math.min(1,this.input.move)
             this.body.velocity=[
-                this.speed*Math.cos(this.input.angle),
-                this.speed*Math.sin(this.input.angle)
+                finalSpeed*Math.cos(this.input.angle),
+                finalSpeed*Math.sin(this.input.angle)
             ];
         } else {
             this.body.velocity=[0,0];

@@ -7,8 +7,6 @@ export class Camera{
         window.addEventListener("wheel",this.onWheel.bind(this))
     }
     update(){
-        // this.stage.position.x = -this.view.playerShape.container.position.x + window.innerWidth/2;
-        // this.stage.position.y = -this.view.playerShape.container.position.y + window.innerHeight/2;
         this.zoomTo(this.wheelZoom);
     }
     zoomTo(newZoom){
@@ -25,5 +23,11 @@ export class Camera{
     }
     onWheel(e){
         this.wheelZoom=this.wheelZoom*(Math.pow(0.9,e.deltaY/100));
+    }
+    modelToScreen(position){
+        return {
+            x: position.x*this.stage.scale.x+this.stage.position.x, 
+            y: position.y*this.stage.scale.y+this.stage.position.y
+        }
     }
 }
