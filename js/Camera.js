@@ -22,7 +22,7 @@ export class Camera{
         this.stage.scale.set(this.zoom,this.zoom);
     }
     onWheel(e){
-        this.wheelZoom=this.wheelZoom*(Math.pow(0.9,e.deltaY/100));
+        this.wheelZoom=Math.max(0.2,Math.min(2.5,this.wheelZoom*(Math.pow(0.9,e.deltaY/100))));
     }
     modelToScreen(position){
         return {
