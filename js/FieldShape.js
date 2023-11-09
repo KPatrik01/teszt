@@ -11,8 +11,18 @@ export class FieldShape{
         this.backgroundGraphics = new PIXI.Graphics();
         this.container.addChild(this.backgroundGraphics);
         this.container.addChild(this.ballShape.container);
+        let style = {
+            fontFamily: 'Arial',
+            fontSize: 60,
+            fill: 0xFF0000,
+            align: 'center'
+        }
+        this.result = new PIXI.Text("0 - 0",style);
+        this.result.x = this.field.balSzel + this.field.palyaSzelesseg/2;
+        this.result.y = this.field.felSzel + 10;
+        this.result.anchor.x = 0.5;
+        this.container.addChild(this.result);
         this.redraw()
-        this.getGoals()
     }
     redraw(){
         this.backgroundGraphics.beginFill(0x13B600);
@@ -117,23 +127,7 @@ export class FieldShape{
         this.valtozas1 = this.field.balGol;
         this.valtozas2 = this.field.jobbGol;
     }
-    getGoals(){
-        let result = "";
-        let style = {
-            fontFamily: 'Arial',
-            fontSize: 60,
-            fill: 0xFF0000,
-            align: 'center'
-        }
-        result = new PIXI.Text(this.field.resultText,style)
-        result.x = this.field.balSzel + this.field.palyaSzelesseg/2;
-        result.y = this.field.felSzel + 10;
-        result.anchor.x = 0.5;
-        return result
-    }
     updateGoals(){
-        this.container.removeChild(this.textResult);
-        this.textResult = this.getGoals();
-        this.container.addChild(this.textResult);
+        this.result.text = this.field.balGol + " - " + this.field.jobbGol;
     }
 }
