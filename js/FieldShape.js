@@ -4,12 +4,15 @@ import { BallShape } from "./BallShape.js";
 export class FieldShape{
     constructor(field){
         this.field = field
+        this.valtozas1 = this.field.balGol;
+        this.valtozas2 = this.field.jobbGol;
         this.ballShape = new BallShape(field.ball);
         this.container = new PIXI.Container();
         this.backgroundGraphics = new PIXI.Graphics();
-        this.container.addChild(this.backgroundGraphics)
-        this.container.addChild(this.ballShape.container)
+        this.container.addChild(this.backgroundGraphics);
+        this.container.addChild(this.ballShape.container);
         this.redraw()
+        this.getGoals()
     }
     redraw(){
         this.backgroundGraphics.beginFill(0x13B600);
@@ -106,5 +109,31 @@ export class FieldShape{
     }
     update(){
         this.ballShape.update();
+        if(this.valtozas1!=this.field.balGol){
+            setTimeout(()=> this.updateGoals(),1000);
+        } else if(this.valtozas2!=this.field.jobbGol){
+            setTimeout(()=> this.updateGoals(),1000);
+        }
+        this.valtozas1 = this.field.balGol;
+        this.valtozas2 = this.field.jobbGol;
+    }
+    getGoals(){
+        let result = "";
+        let style = {
+            fontFamily: 'Arial',
+            fontSize: 60,
+            fill: 0xFF0000,
+            align: 'center'
+        }
+        result = new PIXI.Text(this.field.resultText,style)
+        result.x = this.field.balSzel + this.field.palyaSzelesseg/2;
+        result.y = this.field.felSzel + 10;
+        result.anchor.x = 0.5;
+        return result
+    }
+    updateGoals(){
+        this.container.removeChild(this.textResult);
+        this.textResult = this.getGoals();
+        this.container.addChild(this.textResult);
     }
 }

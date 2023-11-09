@@ -1,6 +1,7 @@
 import Materials from "./Materials.js";
 import { Ball } from "./Ball.js";
 import collisionGroups from "./CollisionGroups.js";
+import { FieldShape } from "./FieldShape.js";
 
 
 export class Field{
@@ -17,6 +18,9 @@ export class Field{
         this.jobbSzel = this.position[0]+this.palyaSzelesseg/2;
         this.alSzel = this.position[1]+this.palyaMagassag/2;
         this.felSzel = this.position[1]-this.palyaMagassag/2;
+        this.balGol = 0;
+        this.jobbGol = 0;
+        
 
         //Fal és Gól szenzor
         this.balGoalSensor = new p2.Body({collisionResponse: false});
@@ -161,9 +165,15 @@ export class Field{
 
             const other = bodies[1-ballIndex];
 
-            if(other == this.balGoalSensor || other == this.jobbGoalSensor) {
-                console.log("GOAL");
-                setTimeout(()=> this.resetBall(),1000)
+            if(other == this.balGoalSensor) {
+                this.jobbGol+=1;
+                this.resultText = this.balGol+" - "+this.jobbGol;
+                setTimeout(()=> this.resetBall(),2000);
+            }
+            if(other == this.jobbGoalSensor) {
+                this.balGol+=1;
+                this.resultText = this.balGol+" - "+this.jobbGol;
+                setTimeout(()=> this.resetBall(),2000);
             }
 
         })
@@ -189,4 +199,7 @@ export class Field{
         this.ball.body.position[1] = this.position[1];
         this.ball.body.velocity = [0, 0];
     }
+
+    
 }
+
