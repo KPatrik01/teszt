@@ -20,6 +20,7 @@ export class Field{
         this.felSzel = this.position[1]-this.palyaMagassag/2;
         this.balGol = 0;
         this.jobbGol = 0;
+        this.resetMatchTimeout = 0;
         
 
         //Fal és Gól szenzor
@@ -147,6 +148,13 @@ export class Field{
         this.world.addBody(this.balKapuFal3);
 
 
+        this.resetButton = new p2.Body({collisionResponse: false});
+        this.resetButtonShape = new p2.Circle({radius: this.postRadius, collisionGroup: collisionGroups.button, collisionMask: collisionGroups.player});
+        this.resetButton.position = [this.balSzel + this.palyaSzelesseg/2, this.felSzel - 20];
+        this.resetButton.addShape(this.resetButtonShape, [0, 0], 0);
+        this.world.addBody(this.resetButton);
+
+
 
         this.ball = new Ball([this.position[0],this.position[1]]);
 
@@ -159,6 +167,11 @@ export class Field{
             const shapes = [event.shapeA, event.shapeB];
 
             const ballIndex = bodies.findIndex(body => body == this.ball.body);
+            const buttonIndex = bodies.findIndex(body => body == this.resetButton);
+            const playerIndex = bodies.findIndex(body => body == this.player.body);
+            if (buttonIndex >= 0 && playerIndex >= 0){
+                this.resetMatchTimeout = setTimeout(() => this.resetMatch(),3000);
+            }
             if(ballIndex < 0) {
                 return;
             }
@@ -174,6 +187,16 @@ export class Field{
                 this.balGol+=1;
                 this.resultText = this.balGol+" - "+this.jobbGol;
                 setTimeout(()=> this.resetBall(),2000);
+            }
+
+        });
+        this.world.on("endContact", event => {
+            const bodies = [event.bodyA, event.bodyB];
+            const buttonIndex = bodies.findIndex(body => body == this.resetButton);
+            const playerIndex = bodies.findIndex(body => body == this.player.body);
+            if (buttonIndex >= 0 && playerIndex >= 0){
+                clearTimeout(this.resetMatchTimeout);
+                this.resetMatchTimeout=0;
             }
 
         })
@@ -198,6 +221,11 @@ export class Field{
         this.ball.body.position[0] = this.position[0];
         this.ball.body.position[1] = this.position[1];
         this.ball.body.velocity = [0, 0];
+    }
+    resetMatch(){
+        this.balGol = 0;
+        this.jobbGol = 0;
+        this.resetBall();
     }
 
     

@@ -9,7 +9,7 @@ export class Player{
         this.stamina = 100;
         this.kick = false;
         this.body = new p2.Body({mass: 1, damping: 0, angularDamping: 0, fixedRotation: true});
-        this.shape = new p2.Circle({radius: this.radius, material: Materials.playerMaterial, collisionGroup: collisionGroups.player, collisionMask: collisionGroups.ball | collisionGroups.fal});
+        this.shape = new p2.Circle({radius: this.radius, material: Materials.playerMaterial, collisionGroup: collisionGroups.player, collisionMask: collisionGroups.ball | collisionGroups.fal | collisionGroups.button});
         this.body.addShape(this.shape);
         this.body.position = [1660, 2250];
     }

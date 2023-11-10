@@ -69,6 +69,7 @@ export class FieldShape{
         this.drawCircle(this.field.balSzel + this.field.palyaSzelesseg/2, this.field.felSzel + this.field.palyaMagassag/2,3,true);
         this.drawCircle(this.field.balSzel + this.field.verticalFalHosszusag/2, this.field.felSzel + this.field.palyaMagassag/2,3,true);
         this.drawCircle(this.field.jobbSzel - this.field.verticalFalHosszusag/2, this.field.felSzel + this.field.palyaMagassag/2,3,true);
+        this.drawCircle(this.field.balSzel + this.field.palyaSzelesseg/2, this.field.felSzel - 20, this.field.resetButtonShape.radius,true);
         this.backgroundGraphics.lineStyle(3,0xFFFFFF);
         this.backgroundGraphics.arc(this.field.balSzel + this.field.verticalFalHosszusag/2, this.field.felSzel + this.field.palyaMagassag/2,this.field.kapuSzelesseg/2 + this.field.verticalFalHosszusag/8, 5.21, 1.075);
         this.backgroundGraphics.lineTo();
@@ -119,11 +120,14 @@ export class FieldShape{
     }
     update(){
         this.ballShape.update();
-        if(this.valtozas1!=this.field.balGol){
-            setTimeout(()=> this.updateGoals(),1000);
-        } else if(this.valtozas2!=this.field.jobbGol){
-            setTimeout(()=> this.updateGoals(),1000);
-        }
+        if(this.valtozas1!=this.field.balGol || this.valtozas2!=this.field.jobbGol){
+            if (!this.field.resetMatchTimeout){
+                setTimeout(()=> this.updateGoals(),1000);
+
+            }else {
+                this.updateGoals();
+            }
+        } 
         this.valtozas1 = this.field.balGol;
         this.valtozas2 = this.field.jobbGol;
     }
