@@ -137,7 +137,7 @@ export class FieldShape{
                 this.resetLoad=0;
                 this.field.resetBall();
                 this.field.balGol=0;
-                this.field.jobGol=0;
+                this.field.jobbGol=0;
                 this.updateGoals();
                 this.playerShape.resetGraphics.clear();
             }
