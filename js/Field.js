@@ -2,6 +2,7 @@ import Materials from "./Materials.js";
 import { Ball } from "./Ball.js";
 import collisionGroups from "./CollisionGroups.js";
 import { FieldShape } from "./FieldShape.js";
+import * as pixiView from "./PixiView.js"
 
 
 export class Field{
@@ -20,7 +21,6 @@ export class Field{
         this.felSzel = this.position[1]-this.palyaMagassag/2;
         this.balGol = 0;
         this.jobbGol = 0;
-        this.resetMatchTimeout = 0;
         
 
         //Fal és Gól szenzor
@@ -170,7 +170,7 @@ export class Field{
             const buttonIndex = bodies.findIndex(body => body == this.resetButton);
             const playerIndex = bodies.findIndex(body => body == this.player.body);
             if (buttonIndex >= 0 && playerIndex >= 0){
-                this.resetMatchTimeout = setTimeout(() => this.resetMatch(),3000);
+                this.reset=true;
             }
             if(ballIndex < 0) {
                 return;
@@ -195,8 +195,7 @@ export class Field{
             const buttonIndex = bodies.findIndex(body => body == this.resetButton);
             const playerIndex = bodies.findIndex(body => body == this.player.body);
             if (buttonIndex >= 0 && playerIndex >= 0){
-                clearTimeout(this.resetMatchTimeout);
-                this.resetMatchTimeout=0;
+                this.reset=false;
             }
 
         })

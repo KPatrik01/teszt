@@ -5,6 +5,8 @@ export class PlayerShape{
         this.playerGraphics = new PIXI.Graphics();
         this.kickGraphics = new PIXI.Graphics();
         this.staminaGraphics = new PIXI.Graphics();
+        this.resetGraphics = new PIXI.Graphics();
+        this.container.addChild(this.resetGraphics);
         this.container.addChild(this.kickGraphics);
         this.container.addChild(this.playerGraphics);
         this.container.addChild(this.staminaGraphics);

@@ -28,20 +28,23 @@ export class PixiView{
         });
     }
     createWorld(){
+        this.createPlayer();
         this.createFields();
         this.spawnPlayer();
     }
+    createPlayer(){
+        this.playerShape = new PlayerShape(this.gameWorld.player);
+    }
+    spawnPlayer(){
+        this.app.stage.addChild(this.playerShape.container);
+        this.playerShape.redraw();
+    }
     createFields(){
         this.gameWorld.fields.forEach(field => {
-            const fieldshape = new FieldShape(field);
+            const fieldshape = new FieldShape(field,this.app.ticker.deltaMS,this.playerShape);
             this.fieldShapes.push(fieldshape);
             this.app.stage.addChild(fieldshape.container);
             fieldshape.redraw();
         });
-    }
-    spawnPlayer(){
-        this.playerShape = new PlayerShape(this.gameWorld.player);
-        this.app.stage.addChild(this.playerShape.container);
-        this.playerShape.redraw();
     }
 }

@@ -2,8 +2,11 @@ import { BallShape } from "./BallShape.js";
 
 
 export class FieldShape{
-    constructor(field){
+    constructor(field,deltaMS,playerShape){
         this.field = field
+        this.deltaMS = deltaMS;
+        this.playerShape = playerShape;
+        this.resetLoad = 0;
         this.valtozas1 = this.field.balGol;
         this.valtozas2 = this.field.jobbGol;
         this.ballShape = new BallShape(field.ball);
@@ -121,17 +124,40 @@ export class FieldShape{
     update(){
         this.ballShape.update();
         if(this.valtozas1!=this.field.balGol || this.valtozas2!=this.field.jobbGol){
-            if (!this.field.resetMatchTimeout){
+            if (!this.field.reset){
                 setTimeout(()=> this.updateGoals(),1000);
 
             }else {
                 this.updateGoals();
             }
         } 
+        if(this.field.reset){
+            this.updateReset();
+            if(this.resetLoad>=3000){
+                this.resetLoad=0;
+                this.field.resetBall();
+                this.field.balGol=0;
+                this.field.jobGol=0;
+                this.updateGoals();
+                this.playerShape.resetGraphics.clear();
+            }
+        } else if (this.field.reset==false){
+            this.playerShape.resetGraphics.clear();
+            this.resetLoad=0;
+            
+        }
+        
         this.valtozas1 = this.field.balGol;
         this.valtozas2 = this.field.jobbGol;
     }
     updateGoals(){
         this.result.text = this.field.balGol + " - " + this.field.jobbGol;
     }
+    updateReset(){
+        this.resetLoad+=this.deltaMS;
+        this.playerShape.resetGraphics.beginFill(0xFFFFFF);
+        this.playerShape.resetGraphics.arc(0, 0, this.field.player.radius+3, 0, this.resetLoad/500);
+        this.playerShape.resetGraphics.endFill();
+    }
+
 }
