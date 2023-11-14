@@ -41,7 +41,7 @@ export class PixiView{
     }
     createFields(){
         this.gameWorld.fields.forEach(field => {
-            const fieldshape = new FieldShape(field,this.app.ticker.deltaMS,this.playerShape);
+            const fieldshape = new FieldShape(field,this.app.ticker.deltaMS,this.playerShape,this);
             this.fieldShapes.push(fieldshape);
             this.app.stage.addChild(fieldshape.container);
             fieldshape.redraw();

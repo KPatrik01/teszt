@@ -2,11 +2,13 @@ import { BallShape } from "./BallShape.js";
 
 
 export class FieldShape{
-    constructor(field,deltaMS,playerShape){
+    constructor(field,deltaMS,playerShape,view){
         this.field = field
         this.deltaMS = deltaMS;
         this.playerShape = playerShape;
+        this.view = view;
         this.resetLoad = 0;
+        this.resetke=false;
         this.valtozas1 = this.field.balGol;
         this.valtozas2 = this.field.jobbGol;
         this.ballShape = new BallShape(field.ball);
@@ -26,6 +28,29 @@ export class FieldShape{
         this.result.anchor.x = 0.5;
         this.container.addChild(this.result);
         this.redraw()
+        this.view.gameWorld.world.on("beginContact",event => {
+            const bodies = [event.bodyA, event.bodyB];
+            
+            const buttonIndex = bodies.findIndex(body => body == this.field.resetButton);
+            const playerIndex = bodies.findIndex(body => body == this.field.player.body);
+
+            if (buttonIndex >= 0 && playerIndex >= 0){
+                this.resetke=true
+            }
+        })
+        this.view.gameWorld.world.on("endContact", event => {
+            const bodies = [event.bodyA, event.bodyB];
+
+            const buttonIndex = bodies.findIndex(body => body == this.field.resetButton);
+            const playerIndex = bodies.findIndex(body => body == this.field.player.body);
+
+            if (buttonIndex >= 0 && playerIndex >= 0){
+                this.resetke=false
+                this.playerShape.resetGraphics.clear();
+                this.resetLoad=0;
+            }
+
+        })
     }
     redraw(){
         this.backgroundGraphics.beginFill(0x13B600);
@@ -88,6 +113,7 @@ export class FieldShape{
 
 
         this.ballShape.redraw()
+        
     }
     drawWall(start, end) {
         this.backgroundGraphics.lineStyle(5,0xFFFFFF);
@@ -124,28 +150,25 @@ export class FieldShape{
     update(){
         this.ballShape.update();
         if(this.valtozas1!=this.field.balGol || this.valtozas2!=this.field.jobbGol){
-            if (!this.field.reset){
+            if (!this.resetke){
                 setTimeout(()=> this.updateGoals(),1000);
 
             }else {
                 this.updateGoals();
             }
         } 
-        if(this.field.reset){
+        if(this.resetke){
             this.updateReset();
-            if(this.resetLoad>=3000){
-                this.resetLoad=0;
-                this.field.resetBall();
-                this.field.balGol=0;
-                this.field.jobbGol=0;
-                this.updateGoals();
-                this.playerShape.resetGraphics.clear();
+                if(this.resetLoad>=3000){
+                    this.resetLoad=0;
+                    this.field.resetBall();
+                    this.field.balGol=0;
+                    this.field.jobbGol=0;
+                    this.updateGoals();
+                    this.playerShape.resetGraphics.clear();
             }
-        } else if (this.field.reset==false){
-            this.playerShape.resetGraphics.clear();
-            this.resetLoad=0;
-            
         }
+        
         
         this.valtozas1 = this.field.balGol;
         this.valtozas2 = this.field.jobbGol;
