@@ -1,6 +1,7 @@
 import Materials from "./Materials.js";
 import { Player } from "./Player.js";
 import { Field } from "./Field.js";
+import { Wall} from "./Wall.js"
 
 
 export class World{
@@ -14,6 +15,7 @@ export class World{
         
         //Update_fields (Uj koordi a playernek. (Player.js))
 
+        this.wall = new Wall(this.world);
         this.player = new Player();
         this.fields = [];
 

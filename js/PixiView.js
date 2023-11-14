@@ -3,6 +3,7 @@ import { FieldShape } from "./FieldShape.js";
 import { PlayerShape } from "./PlayerShape.js";
 import { InputHandler } from "./InputHandler.js";
 import { Camera } from "./Camera.js";
+import { WallShape } from "./WallShape.js";
 
 export class PixiView{
     constructor(gameWorld){
@@ -31,6 +32,7 @@ export class PixiView{
         this.createPlayer();
         this.createFields();
         this.spawnPlayer();
+        this.createWalls();
     }
     createPlayer(){
         this.playerShape = new PlayerShape(this.gameWorld.player);
@@ -46,5 +48,9 @@ export class PixiView{
             this.app.stage.addChild(fieldshape.container);
             fieldshape.redraw();
         });
+    }
+    createWalls(){
+        this.wallShape = new WallShape();
+        this.app.stage.addChild(this.wallShape.container);
     }
 }

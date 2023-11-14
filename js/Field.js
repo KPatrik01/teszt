@@ -2,7 +2,6 @@ import Materials from "./Materials.js";
 import { Ball } from "./Ball.js";
 import collisionGroups from "./CollisionGroups.js";
 import { FieldShape } from "./FieldShape.js";
-import * as pixiView from "./PixiView.js"
 
 
 export class Field{
@@ -169,9 +168,6 @@ export class Field{
             const ballIndex = bodies.findIndex(body => body == this.ball.body);
             const buttonIndex = bodies.findIndex(body => body == this.resetButton);
             const playerIndex = bodies.findIndex(body => body == this.player.body);
-            if (buttonIndex >= 0 && playerIndex >= 0){
-                this.reset=true;
-            }
             if(ballIndex < 0) {
                 return;
             }
@@ -190,15 +186,6 @@ export class Field{
             }
 
         });
-        this.world.on("endContact", event => {
-            const bodies = [event.bodyA, event.bodyB];
-            const buttonIndex = bodies.findIndex(body => body == this.resetButton);
-            const playerIndex = bodies.findIndex(body => body == this.player.body);
-            if (buttonIndex >= 0 && playerIndex >= 0){
-                this.reset=false;
-            }
-
-        })
         
     }
 
