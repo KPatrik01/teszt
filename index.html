@@ -9,12 +9,17 @@
 <script src="js/pixi.js"></script>
 <script src="js/main.js" type="module"></script>
 
-
 </head>
 
 <body oncontextmenu="return false">
 
-  <div id="menu" class="menu">
+  <div id="newName" class="name">
+    <input type="text" id="playerName"><br>
+    <button class="btn" id="Tovabb">Tovább</button>
+    <p id="alert"></p>
+  </div>
+
+  <div id="menu" class="menu" hidden>
     <button class="btn" id="Start">Start Game!</button>
     <button class="btn" onclick="settingsPageSoon()">Coming soon!</button>
     <button class="btn" onclick="self.close()">Close Game!</button>

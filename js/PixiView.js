@@ -10,7 +10,7 @@ export class PixiView{
         this.gameWorld = gameWorld;
         this.fieldShapes = []
         this.app = new PIXI.Application({
-            background: '#1099bb',
+            background: '#007700',
             resizeTo: window,
         });
         this.camera = new Camera(this);

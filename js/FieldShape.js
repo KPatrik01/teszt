@@ -19,7 +19,7 @@ export class FieldShape{
         let style = {
             fontFamily: 'Arial',
             fontSize: 60,
-            fill: 0xFF0000,
+            fill: 0x0000FF,
             align: 'center'
         }
         this.result = new PIXI.Text("0 - 0",style);
@@ -53,10 +53,7 @@ export class FieldShape{
         })
     }
     redraw(){
-        this.backgroundGraphics.beginFill(0x13B600);
-        this.backgroundGraphics.drawRect(this.field.balSzel,this.field.felSzel,this.field.palyaSzelesseg,this.field.palyaMagassag);
-        this.backgroundGraphics.endFill();
-
+        this.drawField();
         //falak rajzolása
         this.drawWall([this.field.balSzel, this.field.felSzel], [this.field.jobbSzel, this.field.felSzel]);
         this.drawWall([this.field.jobbSzel, this.field.felSzel], [this.field.jobbFelsoKapufa.position[0], this.field.jobbFelsoKapufa.position[1]]);
@@ -115,13 +112,26 @@ export class FieldShape{
         this.ballShape.redraw()
         
     }
+    drawField(){
+        for (let i = 0; i < 5; i++){
+            let szam=i+i
+            this.backgroundGraphics.beginFill(0x13B600);
+            this.backgroundGraphics.lineStyle(0);
+            this.backgroundGraphics.drawRect(this.field.balSzel+(this.field.palyaSzelesseg/10)*szam,this.field.felSzel,this.field.palyaSzelesseg/10,this.field.palyaMagassag);
+            this.backgroundGraphics.endFill();
+            this.backgroundGraphics.beginFill(0x139900);
+            this.backgroundGraphics.lineStyle(0);
+            this.backgroundGraphics.drawRect(this.field.balSzel+(this.field.palyaSzelesseg/10)*(szam+1),this.field.felSzel,this.field.palyaSzelesseg/10,this.field.palyaMagassag);
+            this.backgroundGraphics.endFill();
+        }
+    }
     drawWall(start, end) {
         this.backgroundGraphics.lineStyle(5,0xFFFFFF);
         this.backgroundGraphics.moveTo(start[0], start[1]);
         this.backgroundGraphics.lineTo(end[0], end[1]);
     }
     drawGoal(start, end) {
-        this.backgroundGraphics.lineStyle(5,0x777777);
+        this.backgroundGraphics.lineStyle(4,0xAAAAAA);
         this.backgroundGraphics.moveTo(start[0], start[1]);
         this.backgroundGraphics.lineTo(end[0], end[1]);
     }

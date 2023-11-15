@@ -5,7 +5,8 @@ import { Wall} from "./Wall.js"
 
 
 export class World{
-    constructor(){
+    constructor(playerName){
+        this.playerName = playerName;
         this.lastTick = Date.now();
         this.world = new p2.World({gravity: [0, 0]});
         
@@ -16,7 +17,7 @@ export class World{
         //Update_fields (Uj koordi a playernek. (Player.js))
 
         this.wall = new Wall(this.world);
-        this.player = new Player();
+        this.player = new Player(this.playerName);
         this.fields = [];
 
         const field_2v2_1 = new Field(this.world, [120, 200], this.player, 1500, 1050, 300);

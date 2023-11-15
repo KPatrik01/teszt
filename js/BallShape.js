@@ -7,7 +7,7 @@ export class BallShape{
         this.redraw()
     }
     redraw(){
-        this.ballGraphics.beginFill(0x0000FF);
+        this.ballGraphics.beginFill(0xAA0000);
         this.ballGraphics.drawCircle(0, 0,this.ball.radius);
         this.ballGraphics.endFill();
     }

@@ -16,6 +16,14 @@ body {
     text-align: center;
   }
 
+  .name {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
   .btn {
     color: #fff;
     background-color: transparent;
@@ -34,3 +42,7 @@ body {
     background-color: white;
     color: #000;
   }
+
+#alert {
+  color: #fff;
+}

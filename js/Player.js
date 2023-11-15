@@ -3,7 +3,8 @@ import collisionGroups from "./CollisionGroups.js";
 
 
 export class Player{
-    constructor(){
+    constructor(playerName){
+        this.playerName = playerName
         this.radius = 22;
         this.speed = 250;
         this.stamina = 100;
@@ -18,16 +19,13 @@ export class Player{
             if (this.stamina >= 1) {
                 this.speed=450;
                 this.stamina = Math.max(0,this.stamina-1);
-                console.log(this.stamina);
             } else if (this.stamina < 1) {
                 this.speed = 250
                 this.stamina = Math.min(100,this.stamina+0.25);
-                console.log(this.stamina)
             }
         } else {
             this.speed=250;
             this.stamina = Math.min(100,this.stamina+0.75);
-            console.log(this.stamina)
         }
         this.kick = this.input.kick
         if (this.input.move){

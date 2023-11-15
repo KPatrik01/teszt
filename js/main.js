@@ -3,6 +3,8 @@ import { View } from "./CanvasView.js";
 import { PixiView } from "./PixiView.js";
 document.getElementById("Start").addEventListener("click", ()=> startGame());
 
+document.getElementById("Tovabb").addEventListener("click", () => menuPage());
+
 
 let targetX = 30;
 let targetY = 30;
@@ -14,10 +16,10 @@ let isMouse = false;
 let loves = false;
 
 
-let gameWorld = new World();
 
 function settingsPage() {
     if(menu.style.display = "block") {
+        newName.style.display = "none";
         menu.style.display = "none";
         back.style.display = "block";
         beallitasok.style.display = "block";
@@ -27,16 +29,31 @@ function settingsPage() {
 
 function backPage() {
     if(beallitasok.style.display = "block") {
+        newName.style.display = "none";
         beallitasok.style.display = "none";
         menu.style.display = "block";
         back.style.display = "none";
     }
 
 }
+function menuPage() {
+    if(document.getElementById("playerName").value.length < 3){
+        document.getElementById("alert").innerHTML="Minimum 3 karakter legyen a név";
+    } else if (document.getElementById("playerName").value.length > 12) {
+        document.getElementById("alert").innerHTML="Maximum 12 karakter legyen a név";
+    } else if(newName.style.display = "block"){
+        newName.style.display = "none";
+        beallitasok.style.display = "none";
+        menu.style.display = "block";
+        back.style.display = "none";
+    }
+}
 
 
 
 function startGame() {
+    let playerName = document.getElementById("playerName").value;
+    let gameWorld = new World(playerName);
     const pixiView = new PixiView(gameWorld);
     pixiView.createWorld()
     menu.style.display = "none";
