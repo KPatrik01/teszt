@@ -13,10 +13,15 @@ export class PlayerShape{
         this.container.addChild(this.playerBelsoGraphics);
         this.container.addChild(this.staminaGraphics);
         let style = {
-            fontFamily: 'Arial',
+            fill: [
+                "#b30000",
+                "#651a1a"
+            ],
             fontSize: 20,
-            fill: 0xFF0000,
-            align: 'center'
+            fontWeight: "bold",
+            miterLimit: 0,
+            stroke: "#b0b0b0",
+            strokeThickness: 4
         }
         this.newPlayerName = new PIXI.Text(this.player.playerName,style);
         this.newPlayerName.x = this.container.position.x;
@@ -29,11 +34,11 @@ export class PlayerShape{
         this.kickGraphics.beginFill(0xFFFFFF);
         this.kickGraphics.drawCircle(0, 0,this.player.radius+1);
         this.kickGraphics.endFill();
-        this.playerGraphics.beginFill(0x777777);
+        this.playerGraphics.beginFill(0x444444);
         this.playerGraphics.drawCircle(0, 0,this.player.radius);
         this.playerGraphics.endFill();
         this.playerBelsoGraphics.beginFill(0xFFFFFF);
-        this.playerBelsoGraphics.drawCircle(0, 0, this.player.radius-5);
+        this.playerBelsoGraphics.drawCircle(0, 0, this.player.radius-3);
         this.playerBelsoGraphics.endFill();
     }
     update(){
